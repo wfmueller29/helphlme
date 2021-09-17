@@ -40,6 +40,8 @@ keval <- function(df, model, age, fixcov = NULL, main = "", xlab = "", ylab = ""
 #' @param xlab x label for plot
 #' @param ylab y label for plot
 #' @return kable output providing class analysis and plot output
+#' @note if you are using RMarkdown and want to output the kable output to html set
+#'   resutls = "asis"
 #' @export
 
 

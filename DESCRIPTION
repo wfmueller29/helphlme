@@ -1,5 +1,5 @@
 Package: trajpkg
-Title: What the Package Does (One Line, Title Case)
+Title: Latent Class Trajectory Functions
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "First",
@@ -7,7 +7,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "first.last@example.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Latent Class Trajectory Functions
+Description: Latent Class Trajectory function that can be used to follow a 
+    pipeline outlined in the lcmm package vignettes. This package includes 
+    functions for dataframe prep, running hlme models, and analyzing the output 
+    from the models. This package will also include class analysis. 
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
