@@ -38,8 +38,7 @@ ran_can_base <- function(df, fixed, mixture, random_vect, subject, k){
 
 ran_can_par <- function(df, fixed, mixture, random_vect, subject, k){
   mos <- listenv::listenv()
-  mos[[1]] <- list()
-  for(i in length(random_vect)){
+  for(i in 1:length(random_vect)){
     mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k)
   }
   mos <- as.list(mos)
