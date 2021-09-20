@@ -2,11 +2,11 @@
 Latent Class Trajectory Analysis Pipeline
 
 ## How to Install
-1. 
+Step 1: 
 ```
 install.packages("devtools")
 ```
-2. 
+Step 2:
 ```
 devtools::install_github("https://github.com/wfmueller29/trajpkg.git")
 ```
