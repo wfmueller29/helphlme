@@ -36,3 +36,7 @@ kable output providing class analysis and plot output
 Provides n and frequency of each class and post prob of classes.
 Also plots the model results using lcplot function
 }
+\note{
+if you are using RMarkdown and want to output the kable output to html set
+resutls = "asis"
+}
