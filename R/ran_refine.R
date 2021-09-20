@@ -51,17 +51,17 @@ ran_refine_base <- function(df, fixed, mixture, random_vect, subject, k){
 }
 
 ran_refine_par <- function(df, fixed, mixture, random_vect, subject, k){
-  betas_if <- listenv()
+  betas_if <- listenv::listenv()
   for(i in 1:length(random_vect)){
     betas_if[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1)
   }
-  betas_it <- listenv()
+  betas_it <- listenv::listenv()
   for(i in 1:length(random_vect)){
     betas_it[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, idiag = TRUE)
   }
   betas_if <- as.list(betas_if)
   betas_it <- as.list(betas_it)
-  mos <- listenv()
+  mos <- listenv::listenv()
   for(i in 1:length(random_vect)){
     mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = FALSE)
   }

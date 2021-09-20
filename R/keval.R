@@ -46,8 +46,6 @@ keval <- function(df, model, age, fixcov = NULL, main = "", xlab = "", ylab = ""
 
 
 keval_apply <- function(df, model_list, age, fixcov = NULL, main = "", xlab = "", ylab = ""){
-  plots <- list()
-  tables <- list()
   for(i in 1:length(model_list)){
     sub <- paste0("k = ", model_list[[i]]$parameters$k, "; Random = ", model_list[[i]]$parameters$random,
                   "; idiag = ", model_list[[i]]$parameters$idiag, "; nwg = ", model_list[[i]]$parameters$nwg)
