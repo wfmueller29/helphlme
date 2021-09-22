@@ -4,12 +4,17 @@
 \alias{lcmem_prep}
 \title{Prep Data Frame for trajpkg functions}
 \usage{
-lcmem_prep(df, vars)
+lcmem_prep(df, vars, center = TRUE, scale = TRUE)
 }
 \arguments{
 \item{df}{Dataframe object}
 
 \item{vars}{character vector providing the names of the columns we would like to center and scale}
+
+\item{center}{a boolean that specifies if vars should be centered
+by subtracting by the mean}
+
+\item{scale}{a boolean that spcifies if vars should be devided by their standard deviation}
 }
 \value{
 a dataframe with vars centered and scaled and their nonscaled values stores as var_ns

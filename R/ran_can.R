@@ -29,6 +29,7 @@ ran_can <- function(df, fixed, mixture, random_vect, subject, k = 5, par = F){
 }
 
 ran_can_base <- function(df, fixed, mixture, random_vect, subject, k){
+
   mos <- lapply(1: length(random_vect), function(i){
     mo <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k)
   })
@@ -37,9 +38,10 @@ ran_can_base <- function(df, fixed, mixture, random_vect, subject, k){
 
 
 ran_can_par <- function(df, fixed, mixture, random_vect, subject, k){
+  df_global <- eval(df, envir = globalenv())
   mos <- listenv::listenv()
   for(i in 1:length(random_vect)){
-    mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k)
+    mos[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k)})
   }
   mos <- as.list(mos)
   return(mos)

@@ -38,11 +38,12 @@ k_can_base <- function(df, fixed, mixture,  random,subject, max_k){
 }
 
 k_can_par <- function(df, fixed, mixture, random, subject, max_k){
+  df_global <- eval(df, envir = globalenv())
   mos <- listenv::listenv()
   mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1)
   betas <- mos[[1]]$model
   for(i in 2:max_k){
-    mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas)
+    mos[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas)})
 
   }
   mos <- as.list(mos)

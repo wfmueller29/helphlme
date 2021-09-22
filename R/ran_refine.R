@@ -51,28 +51,29 @@ ran_refine_base <- function(df, fixed, mixture, random_vect, subject, k){
 }
 
 ran_refine_par <- function(df, fixed, mixture, random_vect, subject, k){
+  df_global <- eval(df, envir = globalenv())
   betas_if <- listenv::listenv()
   for(i in 1:length(random_vect)){
-    betas_if[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1)$model
+    betas_if[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1)$model})
   }
   betas_it <- listenv::listenv()
   for(i in 1:length(random_vect)){
-    betas_it[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, idiag = TRUE)$model
+    betas_it[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, idiag = TRUE)$model})
   }
   betas_if <- as.list(betas_if)
   betas_it <- as.list(betas_it)
   mos <- listenv::listenv()
   for(i in 1:length(random_vect)){
-    mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = FALSE)
+    mos[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = FALSE)})
   }
   for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = FALSE)
+    mos[[i+length(random_vect)]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = FALSE)})
   }
   for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)*2]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = TRUE)
+    mos[[i+length(random_vect)*2]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = TRUE)})
   }
   for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)*3]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = TRUE)
+    mos[[i+length(random_vect)*3]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = TRUE)})
   }
   mos <- as.list(mos)
   return(mos)
