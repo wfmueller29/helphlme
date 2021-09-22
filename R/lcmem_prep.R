@@ -5,10 +5,13 @@
 #' "_ns" to save the original nonscaled values.
 #' @param df Dataframe object
 #' @param vars character vector providing the names of the columns we would like to center and scale
+#' @param center a boolean that specifies if vars should be centered
+#'   by subtracting by the mean
+#' @param scale a boolean that spcifies if vars should be devided by their standard deviation
 #' @return a dataframe with vars centered and scaled and their nonscaled values stores as var_ns
 #' @export
 
-lcmem_prep <- function(df, vars){
+lcmem_prep <- function(df, vars, center = TRUE, scale = TRUE){
   # save nonscaled values
   vars_ns <- sapply(vars, function(var) paste0(var, "_ns"))
   df[,vars_ns] <- lapply(vars, function(var){
@@ -24,9 +27,17 @@ lcmem_prep <- function(df, vars){
   df_sum <- as.data.frame(df_sum)
   df_scale <- df
   # scale df
-  df_scale[,vars] <-lapply(vars, function(var){
-    df_scale[,var] <- (df[,var] - df_sum[,paste0(var,".mean")])/df_sum[,paste0(var,".sd")]
-  })
+  if (center){
+    df_scale[,vars] <-lapply(vars, function(var){
+      df_scale[,var] <- df[,var] - df_sum[,paste0(var,".mean")]
+    })
+  }
+  if (scale){
+    df_scale[,vars] <- lapply(vars, function(var){
+      df_scale[,var] <- df[,var]/df_sum[,paste0(var,".sd")]
+    })
+  }
+
 
   return(df_scale)
 }
