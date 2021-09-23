@@ -32,17 +32,17 @@ k_can_base <- function(df, fixed, mixture, random, subject, max_k, df_sym){
   mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
   betas <- mos[[1]]$model
   mos <- c(mos, lapply(2:max_k, function(i){
-    mo <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
+    mo <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
   }))
   return(mos)
 }
 
 k_can_par <- function(df, fixed, mixture, random, subject, max_k, df_sym){
   mos <- listenv::listenv()
-  mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
+  mos[[1]] <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
   betas <- mos[[1]]$model
   for(i in 2:max_k){
-    mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
+    mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
 
   }
   mos <- as.list(mos)
