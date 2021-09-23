@@ -18,32 +18,31 @@
 #' @export
 
 k_can <- function(df, fixed, mixture, random, subject, max_k, par = F){
-  df <- substitute(...(df = df))$df
+  df_sym <- substitute(...(df = df))$df
 
   if(par==F){
-    k_can_base(df, fixed, mixture, random, subject, max_k)
+    k_can_base(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, max_k = max_k, df_sym = df_sym)
   } else{
-    k_can_par(df, fixed, mixture, random, subject, max_k)
+    k_can_par(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, max_k = max_k, df_sym = df_sym)
   }
 }
 
-k_can_base <- function(df, fixed, mixture,  random,subject, max_k){
+k_can_base <- function(df, fixed, mixture, random, subject, max_k, df_sym){
   mos <- list()
-  mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1)
+  mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
   betas <- mos[[1]]$model
   mos <- c(mos, lapply(2:max_k, function(i){
-    mo <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas)
+    mo <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
   }))
   return(mos)
 }
 
-k_can_par <- function(df, fixed, mixture, random, subject, max_k){
-  df_global <- eval(df, envir = globalenv())
+k_can_par <- function(df, fixed, mixture, random, subject, max_k, df_sym){
   mos <- listenv::listenv()
-  mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1)
+  mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
   betas <- mos[[1]]$model
   for(i in 2:max_k){
-    mos[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas)})
+    mos[[i]] %<-% lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
 
   }
   mos <- as.list(mos)

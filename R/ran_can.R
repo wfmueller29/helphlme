@@ -19,29 +19,28 @@
 
 
 ran_can <- function(df, fixed, mixture, random_vect, subject, k = 5, par = F){
-  df <- substitute(...(df = df))$df
+  df_sym <- substitute(...(df = df))$df
 
   if(par ==F){
-    ran_can_base(df, fixed, mixture, random_vect, subject, k)
+    ran_can_base(df = df, fixed = fixed, mixture = mixture, random_vect = random_vect, subject = subject, k = k, df_sym = df_sym)
   } else{
-    ran_can_par(df, fixed, mixture, random_vect, subject, k)
+    ran_can_par(df = df, fixed = fixed, mixture = mixture, random_vect = random_vect, subject = subject, k = k, df_sym = df_sym)
   }
 }
 
-ran_can_base <- function(df, fixed, mixture, random_vect, subject, k){
+ran_can_base <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
 
   mos <- lapply(1: length(random_vect), function(i){
-    mo <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k)
+    mo <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, df_sym = df_sym)
   })
   return(mos)
 }
 
 
-ran_can_par <- function(df, fixed, mixture, random_vect, subject, k){
-  df_global <- eval(df, envir = globalenv())
+ran_can_par <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
   mos <- listenv::listenv()
   for(i in 1:length(random_vect)){
-    mos[[i]] <- future({df_global; lcmem(df = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k)})
+    mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, df_sym = df_sym)
   }
   mos <- as.list(mos)
   return(mos)

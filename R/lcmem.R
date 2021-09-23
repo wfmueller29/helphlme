@@ -33,8 +33,13 @@
 #' @return It will return a list where the first element is the hlme object and the second element are the list of the input
 #'   parameters given to the model.
 #' @export
-lcmem <-  function(df, fixed, mixture, random, subject, k, B = NULL, idiag = FALSE, nwg = FALSE){
-  data <- eval(df, envir = globalenv())
+lcmem <-  function(data, fixed, mixture, random, subject, k, B = NULL, idiag = FALSE, nwg = FALSE, df_sym = NULL){
+  if(is.null(df_sym)){
+    df_sym <- substitute(...(df = df))$df
+  } else{
+    df_sym <- df_sym
+  }
+  print(nrow(data))
   message("-------------------------")
   if(k != 1){
     if(is.null(B)){
@@ -42,7 +47,7 @@ lcmem <-  function(df, fixed, mixture, random, subject, k, B = NULL, idiag = FAL
 
       call <- paste0("hlme(fixed = ", fixed,
                      ", random = ", random,
-                     ", data = ", df,
+                     ", data = ", df_sym,
                      ", ng = ", 1,
                      ", idiag =", idiag,
                      ", subject = ", subject,")")
@@ -67,7 +72,7 @@ lcmem <-  function(df, fixed, mixture, random, subject, k, B = NULL, idiag = FAL
     call <- paste0("hlme(fixed = ", fixed,
                    ", mixture = ", mixture,
                    ", random = ", random,
-                   ", data = ", df,
+                   ", data = ", df_sym,
                    ", ng = ", k,
                    ", idiag =", idiag,
                    ", nwg = ", nwg,
@@ -93,7 +98,7 @@ lcmem <-  function(df, fixed, mixture, random, subject, k, B = NULL, idiag = FAL
 
     call <- paste0("hlme(fixed = ", fixed,
                    ", random = ", random,
-                   ", data = ", df,
+                   ", data = ", df_sym,
                    ", ng = ", k,
                    ", idiag =", idiag,
                    ", subject = ", subject, ")")
