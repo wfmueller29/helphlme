@@ -69,10 +69,10 @@ ran_refine_par <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
     mos[[i+length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = FALSE, df_sym = df_sym)
   }
   for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)*2]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = TRUE)
+    mos[[i+length(random_vect)*2]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = TRUE, df_sym = df_sym)
   }
   for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)*3]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = TRUE)
+    mos[[i+length(random_vect)*3]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = TRUE, df_sym = df_sym)
   }
   mos <- as.list(mos)
   return(mos)
