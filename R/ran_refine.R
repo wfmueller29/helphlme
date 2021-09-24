@@ -63,18 +63,17 @@ ran_refine_par <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
   betas_it <- as.list(betas_it)
   mos <- listenv::listenv()
   for(i in 1:length(random_vect)){
-    mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = FALSE, df_sym = df_sym)
+    j <- 0
+    for(idiag in c(TRUE, FALSE)){
+      for(nwg in c(TRUE,FALSE)){
+        if(idiag){beta <- beta_it}
+        else{beta <- beta_if}
+        mos[[i + (j)*length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = beta[[i]], idiag = idiag, nwg = idiag, df_sym = df_sym)
+        j <- j + 1
+      }
+    }
+    mos <- as.list(mos)
+    return(mos)
   }
-  for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = FALSE, df_sym = df_sym)
-  }
-  for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)*2]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = TRUE, df_sym = df_sym)
-  }
-  for(i in 1:length(random_vect)){
-    mos[[i+length(random_vect)*3]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = TRUE, df_sym = df_sym)
-  }
-  mos <- as.list(mos)
-  return(mos)
 }
 
