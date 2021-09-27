@@ -5,7 +5,7 @@
 \title{More Generalized hlme}
 \usage{
 lcmem(
-  df,
+  data,
   fixed,
   mixture,
   random,
@@ -13,13 +13,11 @@ lcmem(
   k,
   B = NULL,
   idiag = FALSE,
-  nwg = FALSE
+  nwg = FALSE,
+  df_sym = NULL
 )
 }
 \arguments{
-\item{df}{a symbol that represents the dataframe of interest in the global environment. For example if you had a dataframe
-traj_gluc in your global env, you would set df = quote(traj_gluc)}
-
 \item{fixed}{a string that represents a two-side linear formual object for the fixed effects in a linear mixed model.
 By default, an intercept is included. If no intercept, -1 should be the first term included on the right of ~.}
 
@@ -51,6 +49,9 @@ If TRUE a diagonal matrix of variance-covariance is considered.}
 If FALSE the variance-covariance matrix is common over latent classes (by default).
 If TRUE a class-specific proportional parameter multiplies the variance-covariance matrix in each class
 (the proportional parameter in the last latent class equals 1 to ensure identifiability).}
+
+\item{df}{a symbol that represents the dataframe of interest in the global environment. For example if you had a dataframe
+traj_gluc in your global env, you would set df = quote(traj_gluc)}
 }
 \value{
 It will return a list where the first element is the hlme object and the second element are the list of the input

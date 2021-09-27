@@ -4,7 +4,7 @@
 \alias{ran_can}
 \title{Random Effects Candidates for Latent Class Mixed Effects Models}
 \usage{
-ran_can(df, fixed, mixture, random_vect, subject, k = 5, par = F)
+ran_can(df, fixed, mixture, random_vect, subject, k = 5)
 }
 \arguments{
 \item{df}{data frame object with data for models}
@@ -23,8 +23,6 @@ with a random-effect are separated by +. By default, an intercept is included. I
 \item{subject}{name of the covariate representing the grouping structure specified with ''.}
 
 \item{k}{number of classes}
-
-\item{par}{boolean argument specifying if models should be run in parallel}
 }
 \value{
 a list that has lcmem output corresponding with the random_vect provided.

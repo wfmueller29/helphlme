@@ -2,28 +2,22 @@
 #'
 #' Provides n and frequency of each class and post prob of classes.
 #' Also plots the model results using lcplot function
-#' @param df data frame used to produce model
+#' @param df data frame used to produce model. lcpred output
 #' @param model lcmem output to evaluate
 #' @param age string of age variable
-#' @param fixcov character vector specifiying other fixed effects covariates modelled besides age
-#' @param main main title for plot
-#' @param xlab x label for plot
-#' @param ylab y label for plot
+#' @param ... arguments to base plots (eg. main = "Title")
 #' @return kable output providing class analysis and plot output
 #' @export
 
 
-keval <- function(df, model, age, fixcov = NULL, main = "", xlab = "", ylab = ""){
+keval <- function(df, model, age, ...){
   sub <- paste0("k = ", model$parameters$k, "; Random = ", model$parameters$random,
                 "; idiag = ", model$parameters$idiag, "; nwg = ", model$parameters$nwg)
   lcplot(df = df,
          model = model$model,
          age = age,
-         fixcov = fixcov,
-         main = main,
-         xlab = xlab,
-         ylab = ylab,
-         sub = sub)
+         sub = sub,
+         ...)
   print(kable(ksum(model$model),caption = sub) %>%
           kable_styling("striped", full_width = F))
 }
@@ -32,31 +26,25 @@ keval <- function(df, model, age, fixcov = NULL, main = "", xlab = "", ylab = ""
 #'
 #' Provides n and frequency of each class and post prob of classes.
 #' Also plots the model results using lcplot function
-#' @param df data frame used to produce model
+#' @param df data frame used to produce model. lcpred output
 #' @param model_list List of lcmem output to evaluate
 #' @param age string of age variable
-#' @param fixcov character vector specifiying other fixed effects covariates modelled besides age
-#' @param main main title for plot
-#' @param xlab x label for plot
-#' @param ylab y label for plot
+#' @param ... arguments to base plots (eg. main = "Title")
 #' @return kable output providing class analysis and plot output
 #' @note if you are using RMarkdown and want to output the kable output to html set
 #'   resutls = "asis"
 #' @export
 
 
-keval_apply <- function(df, model_list, age, fixcov = NULL, main = "", xlab = "", ylab = ""){
+keval_apply <- function(df, model_list, age, ...){
   for(i in 1:length(model_list)){
     sub <- paste0("k = ", model_list[[i]]$parameters$k, "; Random = ", model_list[[i]]$parameters$random,
                   "; idiag = ", model_list[[i]]$parameters$idiag, "; nwg = ", model_list[[i]]$parameters$nwg)
     lcplot(df = df,
            model = model_list[[i]]$model,
            age = age,
-           fixcov = fixcov,
-           main = main,
-           xlab = xlab,
-           ylab = ylab,
-           sub = sub)
+           sub = sub,
+           ...)
     print(kable(ksum(model_list[[i]]$model),caption = sub) %>%
             kable_styling("striped", full_width = F))
   }

@@ -4,33 +4,16 @@
 \alias{lcplot}
 \title{Plot the trajectories of a an hlme object}
 \usage{
-lcplot(
-  df,
-  model,
-  age,
-  fixcov = NULL,
-  main = "",
-  xlab = "",
-  ylab = "",
-  sub = ""
-)
+lcplot(df, model, age, ...)
 }
 \arguments{
-\item{df}{data frame used to model the data. Should be created by lcmem_prep function}
+\item{df}{data frame used to predict model outcomes. Should be prodcued by lcpred}
 
 \item{model}{hlme model output. If modelled using lcmem, use lcmem$model.}
 
 \item{age}{string specfiying age variable name}
 
 \item{fixcov}{character vector specifiying other fixed effects covariates modelled besides age}
-
-\item{main}{main title for plot}
-
-\item{xlab}{xlabel for plot}
-
-\item{ylab}{for plot}
-
-\item{sub}{subtitle for plot}
 }
 \value{
 outputs base plot object. This object cannot be assigned to an R object.

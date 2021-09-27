@@ -39,7 +39,6 @@ lcmem <-  function(data, fixed, mixture, random, subject, k, B = NULL, idiag = F
   } else{
     df_sym <- df_sym
   }
-  print(nrow(data))
   message("-------------------------")
   if(k != 1){
     if(is.null(B)){

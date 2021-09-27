@@ -34,14 +34,14 @@ ran_refine <- function(df, fixed, mixture, random_vect, subject, k, par = F){
     j <- 0
     for(idiag in c(TRUE, FALSE)){
       for(nwg in c(TRUE,FALSE)){
-        if(idiag){beta <- beta_it}
-        else{beta <- beta_if}
-        mos[[i + (j)*length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = beta[[i]], idiag = idiag, nwg = idiag, df_sym = df_sym)
+        if(idiag){beta <- betas_it}
+        else{beta <- betas_if}
+        mos[[i + (j)*length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = beta[[i]], idiag = idiag, nwg = nwg, df_sym = df_sym)
         j <- j + 1
       }
     }
-    mos <- as.list(mos)
-    return(mos)
   }
+  mos <- as.list(mos)
+  return(mos)
 }
 

@@ -4,7 +4,7 @@
 \alias{k_can}
 \title{Class Number Candidates for Latent Class Mixed Effects Models}
 \usage{
-k_can(df, fixed, mixture, random, subject, max_k, par = F)
+k_can(df, fixed, mixture, random, subject, max_k)
 }
 \arguments{
 \item{df}{data frame object with data for models}
@@ -23,8 +23,6 @@ with a random-effect are separated by +. By default, an intercept is included. I
 \item{subject}{name of the covariate representing the grouping structure specified with ''.}
 
 \item{max_k}{the number of classes to apply the model structure}
-
-\item{par}{boolean argument specifying if models should be run in parallel}
 }
 \value{
 a list that has lcmem output corresponding with the vector (1:max_k) provided.

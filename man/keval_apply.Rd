@@ -4,30 +4,16 @@
 \alias{keval_apply}
 \title{Model Class Evaluation for Each Model in List}
 \usage{
-keval_apply(
-  df,
-  model_list,
-  age,
-  fixcov = NULL,
-  main = "",
-  xlab = "",
-  ylab = ""
-)
+keval_apply(df, model_list, age, ...)
 }
 \arguments{
-\item{df}{data frame used to produce model}
+\item{df}{data frame used to produce model. lcpred output}
 
 \item{model_list}{List of lcmem output to evaluate}
 
 \item{age}{string of age variable}
 
-\item{fixcov}{character vector specifiying other fixed effects covariates modelled besides age}
-
-\item{main}{main title for plot}
-
-\item{xlab}{x label for plot}
-
-\item{ylab}{y label for plot}
+\item{...}{arguments to base plots (eg. main = "Title")}
 }
 \value{
 kable output providing class analysis and plot output
