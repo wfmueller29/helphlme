@@ -19,38 +19,6 @@
 
 ran_refine <- function(df, fixed, mixture, random_vect, subject, k, par = F){
   df_sym <- substitute(...(df = df))$df
-
-  if(par==F){
-    ran_refine_base(df = df, fixed = fixed, mixture = mixture, random_vect = random_vect, subject = subject, k = k, df_sym = df_sym)
-  } else{
-    ran_refine_par(df = df, fixed = fixed, mixture = mixture, random_vect = random_vect, subject = subject, k = k, df_sym = df_sym)
-  }
-}
-
-ran_refine_base <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
-  betas_if <- lapply(1:length(random_vect), function(i){
-    lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, df_sym = df_sym)$model
-  })
-  betas_it <- lapply(1:length(random_vect), function(i){
-    lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, idiag = T, df_sym = df_sym)$model
-  })
-
-  mos <- lapply(1:length(random_vect), function(i){
-    lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = FALSE, df_sym = df_sym)
-  })
-  mos <- c(mos, lapply(1:length(random_vect), function(i){
-    lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = FALSE, df_sym = df_sym)
-  }))
-  mos <- c(mos, lapply(1:length(random_vect), function(i){
-    lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_if[[i]], idiag = FALSE, nwg = TRUE, df_sym = df_sym)
-  }))
-  mos <- c(mos, lapply(1:length(random_vect), function(i){
-    lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = betas_it[[i]], idiag = TRUE, nwg = TRUE, df_sym = df_sym)
-  }))
-  return(mos)
-}
-
-ran_refine_par <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
   betas_if <- listenv::listenv()
   for(i in 1:length(random_vect)){
     betas_if[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, df_sym = df_sym)$model

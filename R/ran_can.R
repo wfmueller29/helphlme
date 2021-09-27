@@ -13,31 +13,12 @@
 #'   with a random-effect are separated by +. By default, an intercept is included. If no intercept, -1 should be the first term included.
 #' @param subject name of the covariate representing the grouping structure specified with ''.
 #' @param k number of classes
-#' @param par boolean argument specifying if models should be run in parallel
 #' @return a list that has lcmem output corresponding with the random_vect provided.
 #' @export
 
 
-ran_can <- function(df, fixed, mixture, random_vect, subject, k = 5, par = F){
+ran_can <- function(df, fixed, mixture, random_vect, subject, k = 5){
   df_sym <- substitute(...(df = df))$df
-
-  if(par ==F){
-    ran_can_base(df = df, fixed = fixed, mixture = mixture, random_vect = random_vect, subject = subject, k = k, df_sym = df_sym)
-  } else{
-    ran_can_par(df = df, fixed = fixed, mixture = mixture, random_vect = random_vect, subject = subject, k = k, df_sym = df_sym)
-  }
-}
-
-ran_can_base <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
-
-  mos <- lapply(1: length(random_vect), function(i){
-    mo <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, df_sym = df_sym)
-  })
-  return(mos)
-}
-
-
-ran_can_par <- function(df, fixed, mixture, random_vect, subject, k, df_sym){
   mos <- listenv::listenv()
   for(i in 1:length(random_vect)){
     mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, df_sym = df_sym)

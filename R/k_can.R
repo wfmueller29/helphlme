@@ -13,31 +13,11 @@
 #'   with a random-effect are separated by +. By default, an intercept is included. If no intercept, -1 should be the first term included.
 #' @param subject name of the covariate representing the grouping structure specified with ''.
 #' @param max_k the number of classes to apply the model structure
-#' @param par boolean argument specifying if models should be run in parallel
 #' @return a list that has lcmem output corresponding with the vector (1:max_k) provided.
 #' @export
 
-k_can <- function(df, fixed, mixture, random, subject, max_k, par = F){
+k_can <- function(df, fixed, mixture, random, subject, max_k){
   df_sym <- substitute(...(df = df))$df
-
-  if(par==F){
-    k_can_base(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, max_k = max_k, df_sym = df_sym)
-  } else{
-    k_can_par(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, max_k = max_k, df_sym = df_sym)
-  }
-}
-
-k_can_base <- function(df, fixed, mixture, random, subject, max_k, df_sym){
-  mos <- list()
-  mos[[1]] <- lcmem(df = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
-  betas <- mos[[1]]$model
-  mos <- c(mos, lapply(2:max_k, function(i){
-    mo <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
-  }))
-  return(mos)
-}
-
-k_can_par <- function(df, fixed, mixture, random, subject, max_k, df_sym){
   mos <- listenv::listenv()
   mos[[1]] <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
   betas <- mos[[1]]$model
