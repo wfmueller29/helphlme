@@ -33,6 +33,8 @@ keval <- function(df, model, age, ...){
 #' @return kable output providing class analysis and plot output
 #' @note if you are using RMarkdown and want to output the kable output to html set
 #'   resutls = "asis"
+#' @details each plot and table will be accompanied by default by a string specifying k, random, idiag, and nwg
+#'   to identify each model
 #' @export
 
 

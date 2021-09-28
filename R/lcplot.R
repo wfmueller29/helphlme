@@ -23,9 +23,9 @@ lcplot <- function(df, model, age, ...){
 #' This funciton creates dataframes that are used by the predictY function in the lcmm package to plot hlme models
 #'
 #' @param df dataframe create used to model the data. Should be created by lcmem_prep fucntion
-#' @param age character string of age varibale
-#' @param square character string of quadratic age variable
-#' @param cube character string of cubic age variable
+#' @param age string of age variable used in the model
+#' @param square string of quadratic age variable if a quadratic term was include
+#' @param cube character string of cubic age variable if cubic variable included
 #' @param fixcov character vector of other factor covariates included in the model (eg. sex and strain)
 #' @param center was data centered T or F
 #' @param scale was data scale T or F

@@ -12,8 +12,8 @@ k_can(df, fixed, mixture, random, subject, max_k)
 \item{fixed}{a string that represents a two-side linear formual object for the fixed effects in a linear mixed model.
 By default, an intercept is included. If no intercept, -1 should be the first term included on the right of ~.}
 
-\item{mixture}{a string that represents one-sided formula object for the class-specific fixed effects in the linear mixed model
-(to specify only for a number of latent classes greater than 1). Among the list of covariates included in fixed,
+\item{mixture}{a string that represents one-sided formula object for the class-specific fixed effects in the linear mixed model.
+Among the list of covariates included in fixed,
 the covariates with class-specific regression parameters are entered in mixture separated by +. By default, an intercept is included.
 If no intercept, -1 should be the first term included.}
 

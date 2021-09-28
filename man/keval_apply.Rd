@@ -22,6 +22,10 @@ kable output providing class analysis and plot output
 Provides n and frequency of each class and post prob of classes.
 Also plots the model results using lcplot function
 }
+\details{
+each plot and table will be accompanied by default by a string specifying k, random, idiag, and nwg
+to identify each model
+}
 \note{
 if you are using RMarkdown and want to output the kable output to html set
 resutls = "asis"

@@ -17,11 +17,11 @@ lcpred(
 \arguments{
 \item{df}{dataframe create used to model the data. Should be created by lcmem_prep fucntion}
 
-\item{age}{character string of age varibale}
+\item{age}{string of age variable used in the model}
 
-\item{square}{character string of quadratic age variable}
+\item{square}{string of quadratic age variable if a quadratic term was include}
 
-\item{cube}{character string of cubic age variable}
+\item{cube}{character string of cubic age variable if cubic variable included}
 
 \item{fixcov}{character vector of other factor covariates included in the model (eg. sex and strain)}
 
