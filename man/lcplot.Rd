@@ -13,7 +13,7 @@ lcplot(df, model, age, ...)
 
 \item{age}{string specfiying age variable name}
 
-\item{fixcov}{character vector specifiying other fixed effects covariates modelled besides age}
+\item{...}{arguements to pass to the plot function (eg. main = "title of plot")}
 }
 \value{
 outputs base plot object. This object cannot be assigned to an R object.

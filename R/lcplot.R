@@ -5,7 +5,7 @@
 #' @param df data frame used to predict model outcomes. Should be prodcued by lcpred
 #' @param model hlme model output. If modelled using lcmem, use lcmem$model.
 #' @param age string specfiying age variable name
-#' @param fixcov character vector specifiying other fixed effects covariates modelled besides age
+#' @param ... arguements to pass to the plot function (eg. main = "title of plot")
 #' @return outputs base plot object. This object cannot be assigned to an R object.
 #' @export
 

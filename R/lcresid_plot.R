@@ -7,10 +7,12 @@
 #' @param nameofage string name of age variable
 #' @param ylimit numeric 2 element vector specifying y minimum and y maximum
 #' @return ggplot object of plotted residuals by class
+#' @importFrom dplyr %>%
 #' @export
 
 ### residual plot by class -----------------------------------------------------
 lcresid_plot <- function(data, model, nameofoutcome,  nameofage, ylimit=c(-5,5)){
+  Residuals <- NULL
   k     <- model$ng
   preds <- model$pred
   names(preds)[6] <- nameofoutcome
@@ -31,13 +33,13 @@ lcresid_plot <- function(data, model, nameofoutcome,  nameofage, ylimit=c(-5,5))
 
 
 
-    plots[[i]] <- ggplot2::ggplot(data = plotvaluessub, aes(x = eval(as.symbol(nameofage)), y = Residuals, group = class))+
-      theme(axis.text=element_text(size=16),text = element_text(size=16)) +
-      geom_point() +
+    plots[[i]] <- ggplot2::ggplot(data = plotvaluessub, ggplot2::aes(x = eval(as.symbol(nameofage)), y = Residuals, group = class))+
+      ggplot2::theme(axis.text=ggplot2::element_text(size=16),text = ggplot2::element_text(size=16)) +
+      ggplot2::geom_point() +
       #stat_summary(fun=mean, geom="line", size = 3, col="CadetBlue", group=1) +
-      geom_smooth()+
-      ggtitle("Residuals in class", i) +
-      coord_cartesian(ylim = ylimit)
+      ggplot2::geom_smooth()+
+      ggplot2::ggtitle("Residuals in class", i) +
+      ggplot2::coord_cartesian(ylim = ylimit)
 
   }
   a <- ggpubr::ggarrange(plotlist =  plots, ncol = 2)

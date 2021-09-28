@@ -18,6 +18,8 @@ lcmem(
 )
 }
 \arguments{
+\item{data}{the dataframe that we are using to create the model}
+
 \item{fixed}{a string that represents a two-side linear formual object for the fixed effects in a linear mixed model.
 By default, an intercept is included. If no intercept, -1 should be the first term included on the right of ~.}
 
@@ -50,8 +52,7 @@ If FALSE the variance-covariance matrix is common over latent classes (by defaul
 If TRUE a class-specific proportional parameter multiplies the variance-covariance matrix in each class
 (the proportional parameter in the last latent class equals 1 to ensure identifiability).}
 
-\item{df}{a symbol that represents the dataframe of interest in the global environment. For example if you had a dataframe
-traj_gluc in your global env, you would set df = quote(traj_gluc)}
+\item{df_sym}{the symbol of that dtaframe given by the data param in the global env.}
 }
 \value{
 It will return a list where the first element is the hlme object and the second element are the list of the input

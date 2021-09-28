@@ -4,8 +4,7 @@
 #' Fixed, mixture, and random parameters are strings. Ng (number of groups in hlme) is k in this function. If k > 1 and B
 #' is not supplied, lcmem will run hlme with k = 1, then use this model as B for the provided k. df is a rlang symbol instead of
 #' a dataframe object.
-#' @param df a symbol that represents the dataframe of interest in the global environment. For example if you had a dataframe
-#'   traj_gluc in your global env, you would set df = quote(traj_gluc)
+#' @param data the dataframe that we are using to create the model
 #' @param fixed a string that represents a two-side linear formual object for the fixed effects in a linear mixed model.
 #'   By default, an intercept is included. If no intercept, -1 should be the first term included on the right of ~.
 #' @param mixture a string that represents one-sided formula object for the class-specific fixed effects in the linear mixed model
@@ -30,6 +29,7 @@
 #'   If FALSE the variance-covariance matrix is common over latent classes (by default).
 #'   If TRUE a class-specific proportional parameter multiplies the variance-covariance matrix in each class
 #'   (the proportional parameter in the last latent class equals 1 to ensure identifiability).
+#' @param df_sym the symbol of that dtaframe given by the data param in the global env.
 #' @return It will return a list where the first element is the hlme object and the second element are the list of the input
 #'   parameters given to the model.
 #' @export
@@ -54,8 +54,8 @@ lcmem <-  function(data, fixed, mixture, random, subject, k, B = NULL, idiag = F
       cat(call, "\n")
 
 
-      beta <- lcmm::hlme(fixed = as.formula(fixed),
-                   random = as.formula(random),
+      beta <- lcmm::hlme(fixed = stats::as.formula(fixed),
+                   random = stats::as.formula(random),
                    data = data,
                    ng = 1,
                    idiag = idiag,
@@ -80,9 +80,9 @@ lcmem <-  function(data, fixed, mixture, random, subject, k, B = NULL, idiag = F
 
     cat(call, "\n")
 
-    mo <- lcmm::hlme(fixed = as.formula(fixed),
-               mixture = as.formula(mixture),
-               random = as.formula(random),
+    mo <- lcmm::hlme(fixed = stats::as.formula(fixed),
+               mixture = stats::as.formula(mixture),
+               random = stats::as.formula(random),
                data = data,
                ng = k,
                idiag = idiag,
@@ -104,8 +104,8 @@ lcmem <-  function(data, fixed, mixture, random, subject, k, B = NULL, idiag = F
 
     cat(call, "\n")
 
-    mo <- lcmm::hlme(fixed = as.formula(fixed),
-               random = as.formula(random),
+    mo <- lcmm::hlme(fixed = stats::as.formula(fixed),
+               random = stats::as.formula(random),
                data = data,
                ng = 1,
                idiag = idiag,

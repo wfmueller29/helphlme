@@ -21,6 +21,6 @@ sample_df <- function(df, id, n){
 #' @export
 form_comb <- function(cov){
   n <- length(cov)
-  id <-unlist(lapply(1:n, function(i)combn(1:n,i,simplify = F)), recursive = F)
+  id <-unlist(lapply(1:n, function(i)utils::combn(1:n,i,simplify = F)), recursive = F)
   forms <- sapply(id, function(i) paste("~",paste(cov[i],collapse = "+")))
 }

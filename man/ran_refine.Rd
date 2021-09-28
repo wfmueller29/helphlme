@@ -22,6 +22,8 @@ with a random-effect are separated by +. By default, an intercept is included. I
 
 \item{subject}{name of the covariate representing the grouping structure specified with ''.}
 
+\item{k}{integer specfiyin number of classes}
+
 \item{par}{boolean argument specifying if models should be run in parallel}
 }
 \value{

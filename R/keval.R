@@ -18,8 +18,8 @@ keval <- function(df, model, age, ...){
          age = age,
          sub = sub,
          ...)
-  print(kable(ksum(model$model),caption = sub) %>%
-          kable_styling("striped", full_width = F))
+  print(kableExtra::kable(ksum(model$model),caption = sub) %>%
+          kableExtra::kable_styling("striped", full_width = F))
 }
 
 #' Model Class Evaluation for Each Model in List
@@ -47,8 +47,8 @@ keval_apply <- function(df, model_list, age, ...){
            age = age,
            sub = sub,
            ...)
-    print(kable(ksum(model_list[[i]]$model),caption = sub) %>%
-            kable_styling("striped", full_width = F))
+    print(kableExtra::kable(ksum(model_list[[i]]$model),caption = sub) %>%
+            kableExtra::kable_styling("striped", full_width = F))
   }
 }
 
@@ -62,10 +62,11 @@ keval_apply <- function(df, model_list, age, ...){
 
 
 ksum <- function(model){
+  n <- NULL
   mopp <- model$pprob
   mopp_sum <- mopp %>%
-    group_by(class) %>%
-    summarise(n = n(), across(starts_with("prob"), ~round(mean(.x), digits = 4))) %>%
-    mutate(freq = n/sum(n))
+    dplyr::group_by(class) %>%
+    dplyr::summarise(n = dplyr::n(), dplyr::across(dplyr::starts_with("prob"), ~round(mean(.x), digits = 4))) %>%
+    dplyr::mutate(freq = n/sum(n))
   return(mopp_sum)
 }

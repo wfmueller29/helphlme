@@ -14,6 +14,7 @@
 #' @param subject name of the covariate representing the grouping structure specified with ''.
 #' @param max_k the number of classes to apply the model structure
 #' @return a list that has lcmem output corresponding with the vector (1:max_k) provided.
+#' @importFrom future %<-%
 #' @export
 
 k_can <- function(df, fixed, mixture, random, subject, max_k){
