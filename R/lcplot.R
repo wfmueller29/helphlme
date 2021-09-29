@@ -12,9 +12,16 @@
 
 lcplot <- function(df, model, age, ...){
 
-  pred1 <- lcmm::predictY(model, df, var.time = paste0(age,"_ns"))
+  if(model$conv == 1 | model$conv == 2){
+    pred1 <- lcmm::predictY(model, df, var.time = paste0(age,"_ns"))
 
-  plot(pred1, ...)
+    plot(pred1, ...)
+  } else{
+    sub <- paste0("k = ", model$call$ng, "; Random = ", deparse(model$call$random),
+                  "; idiag = ", model$call$idiag, "; nwg = ", model$call$nwg)
+    message(sub, "did not converge")
+  }
+
 
 }
 
