@@ -14,7 +14,6 @@
 #'   with a random-effect are separated by +. By default, an intercept is included. If no intercept, -1 should be the first term included.
 #' @param subject name of the covariate representing the grouping structure specified with ''.
 #' @param k integer specfiyin number of classes
-#' @param par boolean argument specifying if models should be run in parallel
 #' @return a list that has lcmem output.
 #' @export
 
