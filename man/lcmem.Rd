@@ -14,7 +14,8 @@ lcmem(
   B = NULL,
   idiag = FALSE,
   nwg = FALSE,
-  df_sym = NULL
+  df_sym = NULL,
+  silent = TRUE
 )
 }
 \arguments{
