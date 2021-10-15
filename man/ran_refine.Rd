@@ -4,7 +4,7 @@
 \alias{ran_refine}
 \title{Random Effects Refinement for Latent Class Mixed Effects Models}
 \usage{
-ran_refine(df, fixed, mixture, random_vect, subject, k, par = F)
+ran_refine(df, fixed, mixture, random_vect, subject, k)
 }
 \arguments{
 \item{df}{data frame object with data for models}

@@ -17,7 +17,7 @@
 #' @return a list that has lcmem output.
 #' @export
 
-ran_refine <- function(df, fixed, mixture, random_vect, subject, k, par = F){
+ran_refine <- function(df, fixed, mixture, random_vect, subject, k){
   df_sym <- substitute(...(df = df))$df
   betas_if <- listenv::listenv()
   for(i in 1:length(random_vect)){
