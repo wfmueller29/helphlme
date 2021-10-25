@@ -13,17 +13,24 @@
 #'   with a random-effect are separated by +. By default, an intercept is included. If no intercept, -1 should be the first term included.
 #' @param subject name of the covariate representing the grouping structure specified with ''.
 #' @param max_k the number of classes to apply the model structure
+#' @param idiag optional logical for the structure of the variance-covariance matrix of the random-effects.
+#'   If FALSE, a non structured matrix of variance-covariance is considered (by default).
+#'   If TRUE a diagonal matrix of variance-covariance is considered.
+#' @param nwg optional logical indicating if the variance-covariance of the random-effects is class-specific.
+#'   If FALSE the variance-covariance matrix is common over latent classes (by default).
+#'   If TRUE a class-specific proportional parameter multiplies the variance-covariance matrix in each class
+#'   (the proportional parameter in the last latent class equals 1 to ensure identifiability).
 #' @return a list that has lcmem output corresponding with the vector (1:max_k) provided.
 #' @importFrom future %<-%
 #' @export
 
-k_can <- function(df, fixed, mixture, random, subject, max_k){
+k_can <- function(df, fixed, mixture, random, subject, max_k, idiag = FALSE, nwg = FALSE){
   df_sym <- substitute(...(df = df))$df
   mos <- listenv::listenv()
-  mos[[1]] <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym)
+  mos[[1]] <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym, idiag = idiag)
   betas <- mos[[1]]$model
   for(i in 2:max_k){
-    mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym)
+    mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym, idiag = idiag, nwg = nwg)
 
   }
   mos <- as.list(mos)

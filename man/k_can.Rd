@@ -4,7 +4,7 @@
 \alias{k_can}
 \title{Class Number Candidates for Latent Class Mixed Effects Models}
 \usage{
-k_can(df, fixed, mixture, random, subject, max_k)
+k_can(df, fixed, mixture, random, subject, max_k, idiag = FALSE, nwg = FALSE)
 }
 \arguments{
 \item{df}{data frame object with data for models}
@@ -23,6 +23,15 @@ with a random-effect are separated by +. By default, an intercept is included. I
 \item{subject}{name of the covariate representing the grouping structure specified with ''.}
 
 \item{max_k}{the number of classes to apply the model structure}
+
+\item{idiag}{optional logical for the structure of the variance-covariance matrix of the random-effects.
+If FALSE, a non structured matrix of variance-covariance is considered (by default).
+If TRUE a diagonal matrix of variance-covariance is considered.}
+
+\item{nwg}{optional logical indicating if the variance-covariance of the random-effects is class-specific.
+If FALSE the variance-covariance matrix is common over latent classes (by default).
+If TRUE a class-specific proportional parameter multiplies the variance-covariance matrix in each class
+(the proportional parameter in the last latent class equals 1 to ensure identifiability).}
 }
 \value{
 a list that has lcmem output corresponding with the vector (1:max_k) provided.
