@@ -10,7 +10,8 @@ mo_eval(list)
 \item{list}{List of lcmem outputs from ran_can function}
 }
 \value{
-data frame of with model number, model details, BIC and AIC
+data frame of with model number, model details, BIC and AIC other model selection criteria. This function
+also returns plots of the model selection criteria by model number.
 }
 \description{
 Outputs BIC and AIC for each model in the list provided
