@@ -26,7 +26,7 @@ mo_eval <- function(list){
     ggplot(aes(x = factor(as.integer(`Model Number`)))) +
     geom_point(aes(y = value)) +
     geom_line(aes(y =value, group = "None")) +
-    facet_wrap(vars(mo_crit), ncol = 3, scales = "free") +
+    facet_wrap(vars(mo_crit), ncol = 3, scales = "fixed") +
     labs(x = "Model Number", title = "Model Criteria")
   return(list(plot = plot, table = tab))
 }
