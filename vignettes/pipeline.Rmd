@@ -1,0 +1,22 @@
+---
+title: "pipeline"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{pipeline}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+## This is a test
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(trajpkg)
+```
+
