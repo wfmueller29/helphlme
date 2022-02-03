@@ -1,6 +1,6 @@
 Package: trajpkg
 Title: Latent Class Trajectory Functions
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "William",
            family = "Mueller",
