@@ -50,7 +50,7 @@ lcpred <- function(df, age_vars, fixcov = NULL){
   }
 
   age_vars_ns <- paste0(age_vars, "_ns") # create non-scaled varaible names
-  df <- df[, c(age_vars, age_vars_ns)] # select age vars scaled and age vars not scaled
+  df <- df[, c(age_vars, age_vars_ns, fixcov_names)] # select age vars scaled and age vars not scaled
   df <- df[!duplicated(df[,age_vars]),]  # removed duplicated times and select first occurring
   df$cut_age <- cut(df[,age_vars[1]], breaks = 50)  # cut range into 50 intervals based on age_wk
   df <- df[order(df[,age_vars[1]]),]   # order dataframe based on age_wk
