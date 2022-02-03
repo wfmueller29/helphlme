@@ -4,33 +4,22 @@
 \alias{lcpred}
 \title{Create Dataframe to Predict hlme Outcome}
 \usage{
-lcpred(
-  df,
-  age,
-  square = NULL,
-  cube = NULL,
-  fixcov = NULL,
-  center = FALSE,
-  scale = FALSE
-)
+lcpred(df, age_vars, fixcov = NULL)
 }
 \arguments{
 \item{df}{dataframe create used to model the data. Should be created by lcmem_prep fucntion}
 
-\item{age}{string of age variable used in the model}
+\item{age_vars}{if only one age variable was used character string of that varaible name. If two or more age
+variables were used, character vector where each element is the name of the age varaible. The first element
+be the first order age term (ie. c("age_wk", "age_wk^2"))}
 
-\item{square}{string of quadratic age variable if a quadratic term was include}
-
-\item{cube}{character string of cubic age variable if cubic variable included}
-
-\item{fixcov}{character vector of other factor covariates included in the model (eg. sex and strain)}
-
-\item{center}{was data centered T or F}
-
-\item{scale}{was data scale T or F}
+\item{fixcov}{default is null. Named vector of nontime-dependent covariates included in the the model. The names
+of the entries corresponds to the name of the variable and the value of the entries corresponds to group
+that we would like to predict.}
 }
 \value{
-a dataframe
+a dataframe with age varaibles scaled and not scaled ("_ns"), and time-independent covariates to use
+for lcmm::predY function
 }
 \description{
 This funciton creates dataframes that are used by the predictY function in the lcmm package to plot hlme models
