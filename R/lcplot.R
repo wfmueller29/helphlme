@@ -30,35 +30,33 @@ lcplot <- function(df, model, age, ...){
 #' This funciton creates dataframes that are used by the predictY function in the lcmm package to plot hlme models
 #'
 #' @param df dataframe create used to model the data. Should be created by lcmem_prep fucntion
-#' @param age string of age variable used in the model
-#' @param square string of quadratic age variable if a quadratic term was include
-#' @param cube character string of cubic age variable if cubic variable included
-#' @param fixcov character vector of other factor covariates included in the model (eg. sex and strain)
-#' @param center was data centered T or F
-#' @param scale was data scale T or F
-#' @return a dataframe
+#' @param age_vars if only one age variable was used character string of that varaible name. If two or more age
+#' variables were used, character vector where each element is the name of the age varaible. The first element
+#' be the first order age term (ie. c("age_wk", "age_wk^2"))
+#' @param fixcov default is null. Named vector of nontime-dependent covariates included in the the model. The names
+#' of the entries corresponds to the name of the variable and the value of the entries corresponds to group
+#' that we would like to predict.
+#' @return a dataframe with age varaibles scaled and not scaled ("_ns"), and time-independent covariates to use
+#' for lcmm::predY function
 #' @export
 
-lcpred <- function(df, age, square = NULL, cube = NULL, fixcov = NULL, center = FALSE, scale = FALSE){
-  vect <- seq(min(df[,paste0(age,"_ns")]), max(df[,paste0(age,"_ns")]),length = 50)
-  df_pred <- data.frame(vect)
-  names(df_pred) <- age
-  vars <- age
-  if(!is.null(square)){
-    df_pred[,square] <- df_pred[,age]*df_pred[,age]
-    vars <- c(vars, square)
-  }
-  if(!is.null(cube)){
-    df_pred[,cube] <- df_pred[,age]*df_pred[,age]*df_pred[,age]
-    vars <- c(vars, cube)
+lcpred <- function(df, age_vars, fixcov = NULL){
 
+  if(!is.null(fixcov)){ ## if fixcov are provided
+    fixcov_names <- names(fixcov) ## get names of fixcov
+    df[,fixcov_names] <- lapply(fixcov_names, function(name){ ## loop through names
+      val <- fixcov[[name]] ## assigned fixcov value provided
+    })
   }
-  df_pred[,fixcov] <- lapply(1:length(fixcov), function(i){ ##sex all factor covariates = 0
-    fixcov <- 0
-  })
-  df_pred <- lcmem_prep(df = df_pred, vars = vars, center = center, scale = scale) # use lcmem_prep on predict dataframe
-  df_pred <- df_pred
-  return(df_pred)
+
+  age_vars_ns <- paste0(age_vars, "_ns") # create non-scaled varaible names
+  df <- df[, c(age_vars, age_vars_ns)] # select age vars scaled and age vars not scaled
+  df <- df[!duplicated(df[,age_vars]),]  # removed duplicated times and select first occurring
+  df$cut_age <- cut(df[,age_vars[1]], breaks = 50)  # cut range into 50 intervals based on age_wk
+  df <- df[order(df[,age_vars[1]]),]   # order dataframe based on age_wk
+  df_not_dup  <- df[!duplicated(df$cut_age),] # select first occuring observation for each cut_age group
+  df <- df[,names(df) != "cut_age"] # drop cut_age variable
+  return(df)
 
 }
 
