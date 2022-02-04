@@ -47,6 +47,8 @@ lcpred <- function(df, age_vars, fixcov = NULL){
     df[,fixcov_names] <- lapply(fixcov_names, function(name){ ## loop through names
       val <- fixcov[[name]] ## assigned fixcov value provided
     })
+  }else{
+    fixcov_names <- NULL
   }
 
   age_vars_ns <- paste0(age_vars, "_ns") # create non-scaled varaible names
