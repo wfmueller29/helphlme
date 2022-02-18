@@ -7,8 +7,8 @@
 #' @return a data frame
 #' @export
 
-sample_df <- function(df, id, n){
-  chosen <- sample(unique(df[,id]), n)
+sample_df <- function(df, id, n) {
+  chosen <- sample(unique(df[, id]), n)
   df <- subset(df, eval(parse(text = id)) %in% chosen)
 }
 
@@ -19,8 +19,8 @@ sample_df <- function(df, id, n){
 #' @param cov character vector of covariates
 #' @return character vector of random effects formula
 #' @export
-form_comb <- function(cov){
+form_comb <- function(cov) {
   n <- length(cov)
-  id <-unlist(lapply(1:n, function(i)utils::combn(1:n,i,simplify = F)), recursive = F)
-  forms <- sapply(id, function(i) paste("~",paste(cov[i],collapse = "+")))
+  id <- unlist(lapply(1:n, function(i) utils::combn(1:n, i, simplify = F)), recursive = F)
+  forms <- sapply(id, function(i) paste("~", paste(cov[i], collapse = "+")))
 }

@@ -17,26 +17,29 @@
 #' @return a list that has lcmem output.
 #' @export
 
-ran_refine <- function(df, fixed, mixture, random_vect, subject, k){
+ran_refine <- function(df, fixed, mixture, random_vect, subject, k) {
   df_sym <- substitute(...(df = df))$df
   betas_if <- listenv::listenv()
-  for(i in 1:length(random_vect)){
+  for (i in 1:length(random_vect)) {
     betas_if[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, df_sym = df_sym)$model
   }
   betas_it <- listenv::listenv()
-  for(i in 1:length(random_vect)){
+  for (i in 1:length(random_vect)) {
     betas_it[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = 1, idiag = TRUE, df_sym = df_sym)$model
   }
   betas_if <- as.list(betas_if)
   betas_it <- as.list(betas_it)
   mos <- listenv::listenv()
-  for(i in 1:length(random_vect)){
+  for (i in 1:length(random_vect)) {
     j <- 0
-    for(idiag in c(TRUE, FALSE)){
-      for(nwg in c(TRUE,FALSE)){
-        if(idiag){beta <- betas_it}
-        else{beta <- betas_if}
-        mos[[i + (j)*length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = beta[[i]], idiag = idiag, nwg = nwg, df_sym = df_sym)
+    for (idiag in c(TRUE, FALSE)) {
+      for (nwg in c(TRUE, FALSE)) {
+        if (idiag) {
+          beta <- betas_it
+        } else {
+          beta <- betas_if
+        }
+        mos[[i + (j) * length(random_vect)]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, B = beta[[i]], idiag = idiag, nwg = nwg, df_sym = df_sym)
         j <- j + 1
       }
     }
@@ -44,4 +47,3 @@ ran_refine <- function(df, fixed, mixture, random_vect, subject, k){
   mos <- as.list(mos)
   return(mos)
 }
-

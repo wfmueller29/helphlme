@@ -10,16 +10,20 @@
 #' @export
 
 
-keval <- function(df, model, age, ...){
-  sub <- paste0("k = ", model$parameters$k, "; Random = ", model$parameters$random,
-                "; idiag = ", model$parameters$idiag, "; nwg = ", model$parameters$nwg)
-  lcplot(df = df,
-         model = model$model,
-         age = age,
-         sub = sub,
-         ...)
-  print(kableExtra::kable(ksum(model$model),caption = sub) %>%
-          kableExtra::kable_styling("striped", full_width = F))
+keval <- function(df, model, age, ...) {
+  sub <- paste0(
+    "k = ", model$parameters$k, "; Random = ", model$parameters$random,
+    "; idiag = ", model$parameters$idiag, "; nwg = ", model$parameters$nwg
+  )
+  lcplot(
+    df = df,
+    model = model$model,
+    age = age,
+    sub = sub,
+    ...
+  )
+  print(kableExtra::kable(ksum(model$model), caption = sub) %>%
+    kableExtra::kable_styling("striped", full_width = F))
 }
 
 #' Model Class Evaluation for Each Model in List
@@ -38,17 +42,21 @@ keval <- function(df, model, age, ...){
 #' @export
 
 
-keval_apply <- function(df, model_list, age, ...){
-  for(i in 1:length(model_list)){
-    sub <- paste0("Model Number = ", i, "; k = ", model_list[[i]]$parameters$k, "; Random = ", model_list[[i]]$parameters$random,
-                  "; idiag = ", model_list[[i]]$parameters$idiag, "; nwg = ", model_list[[i]]$parameters$nwg)
-    lcplot(df = df,
-           model = model_list[[i]]$model,
-           age = age,
-           sub = sub,
-           ...)
-    print(kableExtra::kable(ksum(model_list[[i]]$model),caption = sub) %>%
-            kableExtra::kable_styling("striped", full_width = F))
+keval_apply <- function(df, model_list, age, ...) {
+  for (i in 1:length(model_list)) {
+    sub <- paste0(
+      "Model Number = ", i, "; k = ", model_list[[i]]$parameters$k, "; Random = ", model_list[[i]]$parameters$random,
+      "; idiag = ", model_list[[i]]$parameters$idiag, "; nwg = ", model_list[[i]]$parameters$nwg
+    )
+    lcplot(
+      df = df,
+      model = model_list[[i]]$model,
+      age = age,
+      sub = sub,
+      ...
+    )
+    print(kableExtra::kable(ksum(model_list[[i]]$model), caption = sub) %>%
+      kableExtra::kable_styling("striped", full_width = F))
   }
 }
 
@@ -61,12 +69,12 @@ keval_apply <- function(df, model_list, age, ...){
 #' @export
 
 
-ksum <- function(model){
+ksum <- function(model) {
   n <- NULL
   mopp <- model$pprob
   mopp_sum <- mopp %>%
     dplyr::group_by(class) %>%
-    dplyr::summarise(n = dplyr::n(), dplyr::across(dplyr::starts_with("prob"), ~round(mean(.x), digits = 4))) %>%
-    dplyr::mutate(freq = n/sum(n))
+    dplyr::summarise(n = dplyr::n(), dplyr::across(dplyr::starts_with("prob"), ~ round(mean(.x), digits = 4))) %>%
+    dplyr::mutate(freq = n / sum(n))
   return(mopp_sum)
 }

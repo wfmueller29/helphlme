@@ -11,38 +11,37 @@
 #' @export
 
 ### residual plot by class -----------------------------------------------------
-lcresid_plot <- function(data, model, nameofoutcome,  nameofage, ylimit=c(-5,5)){
+lcresid_plot <- function(data, model, nameofoutcome, nameofage, ylimit = c(-5, 5)) {
   Residuals <- NULL
-  k     <- model$ng
+  k <- model$ng
   preds <- model$pred
   names(preds)[6] <- nameofoutcome
-  nameofid        <- names(model$pred)[1]
-  test <- dplyr::left_join(preds, model$pprob, by=nameofid)
-  test <- dplyr::left_join(test, data, by=c(nameofid, nameofoutcome))
+  nameofid <- names(model$pred)[1]
+  test <- dplyr::left_join(preds, model$pprob, by = nameofid)
+  test <- dplyr::left_join(test, data, by = c(nameofid, nameofoutcome))
 
   plotvalues <- NULL
 
   plots <- list()
 
-  for(i in 1:k){
-
-    newplotvalues <- test %>% dplyr::filter(class==i) %>% dplyr::mutate(Residuals=get(nameofoutcome)-eval(parse(text=paste0("pred_ss",i))))
+  for (i in 1:k) {
+    newplotvalues <- test %>%
+      dplyr::filter(class == i) %>%
+      dplyr::mutate(Residuals = get(nameofoutcome) - eval(parse(text = paste0("pred_ss", i))))
     plotvalues <- rbind(plotvalues, newplotvalues)
 
-    plotvaluessub <- plotvalues %>% dplyr::filter(class==i)
+    plotvaluessub <- plotvalues %>% dplyr::filter(class == i)
 
 
 
-    plots[[i]] <- ggplot2::ggplot(data = plotvaluessub, ggplot2::aes(x = eval(as.symbol(nameofage)), y = Residuals, group = class))+
-      ggplot2::theme(axis.text=ggplot2::element_text(size=16),text = ggplot2::element_text(size=16)) +
+    plots[[i]] <- ggplot2::ggplot(data = plotvaluessub, ggplot2::aes(x = eval(as.symbol(nameofage)), y = Residuals, group = class)) +
+      ggplot2::theme(axis.text = ggplot2::element_text(size = 16), text = ggplot2::element_text(size = 16)) +
       ggplot2::geom_point() +
-      #stat_summary(fun=mean, geom="line", size = 3, col="CadetBlue", group=1) +
-      ggplot2::geom_smooth()+
+      # stat_summary(fun=mean, geom="line", size = 3, col="CadetBlue", group=1) +
+      ggplot2::geom_smooth() +
       ggplot2::ggtitle("Residuals in class", i) +
       ggplot2::coord_cartesian(ylim = ylimit)
-
   }
-  a <- ggpubr::ggarrange(plotlist =  plots, ncol = 2)
+  a <- ggpubr::ggarrange(plotlist = plots, ncol = 2)
   return(a)
 }
-

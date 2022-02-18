@@ -10,19 +10,18 @@
 #' @export
 
 
-lcplot <- function(df, model, age, ...){
-
-  if(model$conv == 1 | model$conv == 2){
-    pred1 <- lcmm::predictY(model, df, var.time = paste0(age,"_ns"))
+lcplot <- function(df, model, age, ...) {
+  if (model$conv == 1 | model$conv == 2) {
+    pred1 <- lcmm::predictY(model, df, var.time = paste0(age, "_ns"))
 
     plot(pred1, ...)
-  } else{
-    sub <- paste0("k = ", model$call$ng, "; Random = ", deparse(model$call$random),
-                  "; idiag = ", model$call$idiag, "; nwg = ", model$call$nwg)
+  } else {
+    sub <- paste0(
+      "k = ", model$call$ng, "; Random = ", deparse(model$call$random),
+      "; idiag = ", model$call$idiag, "; nwg = ", model$call$nwg
+    )
     message(sub, "did not converge")
   }
-
-
 }
 
 #' Create Dataframe to Predict hlme Outcome
@@ -40,25 +39,22 @@ lcplot <- function(df, model, age, ...){
 #' for lcmm::predY function
 #' @export
 
-lcpred <- function(df, age_vars, fixcov = NULL){
-
-  if(!is.null(fixcov)){ ## if fixcov are provided
+lcpred <- function(df, age_vars, fixcov = NULL) {
+  if (!is.null(fixcov)) { ## if fixcov are provided
     fixcov_names <- names(fixcov) ## get names of fixcov
-    df[,fixcov_names] <- lapply(fixcov_names, function(name){ ## loop through names
+    df[, fixcov_names] <- lapply(fixcov_names, function(name) { ## loop through names
       val <- fixcov[[name]] ## assigned fixcov value provided
     })
-  }else{
+  } else {
     fixcov_names <- NULL
   }
 
   age_vars_ns <- paste0(age_vars, "_ns") # create non-scaled varaible names
   df <- df[, c(age_vars, age_vars_ns, fixcov_names)] # select age vars scaled and age vars not scaled
-  df <- df[!duplicated(df[,age_vars]),]  # removed duplicated times and select first occurring
-  df$cut_age <- cut(df[,age_vars[1]], breaks = 50)  # cut range into 50 intervals based on age_wk
-  df <- df[order(df[,age_vars[1]]),]   # order dataframe based on age_wk
-  df_not_dup  <- df[!duplicated(df$cut_age),] # select first occuring observation for each cut_age group
-  df <- df[,names(df) != "cut_age"] # drop cut_age variable
+  df <- df[!duplicated(df[, age_vars]), ] # removed duplicated times and select first occurring
+  df$cut_age <- cut(df[, age_vars[1]], breaks = 50) # cut range into 50 intervals based on age_wk
+  df <- df[order(df[, age_vars[1]]), ] # order dataframe based on age_wk
+  df_not_dup <- df[!duplicated(df$cut_age), ] # select first occuring observation for each cut_age group
+  df <- df[, names(df) != "cut_age"] # drop cut_age variable
   return(df)
-
 }
-

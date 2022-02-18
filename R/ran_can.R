@@ -17,10 +17,10 @@
 #' @export
 
 
-ran_can <- function(df, fixed, mixture, random_vect, subject, k = 5){
+ran_can <- function(df, fixed, mixture, random_vect, subject, k = 5) {
   df_sym <- substitute(...(df = df))$df
   mos <- listenv::listenv()
-  for(i in 1:length(random_vect)){
+  for (i in 1:length(random_vect)) {
     mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random_vect[[i]], subject = subject, k = k, df_sym = df_sym)
   }
   mos <- as.list(mos)

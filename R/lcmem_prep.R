@@ -11,30 +11,30 @@
 #' @return a dataframe with vars centered and scaled and their nonscaled values stores as var_ns
 #' @export
 
-lcmem_prep <- function(df, vars, center = TRUE, scale = TRUE){
+lcmem_prep <- function(df, vars, center = TRUE, scale = TRUE) {
   # save nonscaled values
   vars_ns <- sapply(vars, function(var) paste0(var, "_ns"))
-  df[,vars_ns] <- lapply(vars, function(var){
-    df[,paste0(var,"_ns")] <- df[,var]
+  df[, vars_ns] <- lapply(vars, function(var) {
+    df[, paste0(var, "_ns")] <- df[, var]
   })
   # create summary tables
-  df_sum <- lapply(vars, function(var){
-    mean <- mean(df[,var])
-    sd <- sd(df[,var])
+  df_sum <- lapply(vars, function(var) {
+    mean <- mean(df[, var])
+    sd <- sd(df[, var])
     return(list(mean = mean, sd = sd))
   })
   names(df_sum) <- vars
   df_sum <- as.data.frame(df_sum)
   df_scale <- df
   # scale df
-  if (center){
-    df_scale[,vars] <-lapply(vars, function(var){
-      df_scale[,var] <- df[,var] - df_sum[,paste0(var,".mean")]
+  if (center) {
+    df_scale[, vars] <- lapply(vars, function(var) {
+      df_scale[, var] <- df[, var] - df_sum[, paste0(var, ".mean")]
     })
   }
-  if (scale){
-    df_scale[,vars] <- lapply(vars, function(var){
-      df_scale[,var] <- df[,var]/df_sum[,paste0(var,".sd")]
+  if (scale) {
+    df_scale[, vars] <- lapply(vars, function(var) {
+      df_scale[, var] <- df[, var] / df_sum[, paste0(var, ".sd")]
     })
   }
 

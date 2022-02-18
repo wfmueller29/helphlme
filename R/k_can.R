@@ -24,14 +24,13 @@
 #' @importFrom future %<-%
 #' @export
 
-k_can <- function(df, fixed, mixture, random, subject, max_k, idiag = FALSE, nwg = FALSE){
+k_can <- function(df, fixed, mixture, random, subject, max_k, idiag = FALSE, nwg = FALSE) {
   df_sym <- substitute(...(df = df))$df
   mos <- listenv::listenv()
   mos[[1]] <- lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = 1, df_sym = df_sym, idiag = idiag)
   betas <- mos[[1]]$model
-  for(i in 2:max_k){
+  for (i in 2:max_k) {
     mos[[i]] %<-% lcmem(data = df, fixed = fixed, mixture = mixture, random = random, subject = subject, k = i, B = betas, df_sym = df_sym, idiag = idiag, nwg = nwg)
-
   }
   mos <- as.list(mos)
   return(mos)

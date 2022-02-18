@@ -5,6 +5,6 @@
 #'
 #'
 
-map_hlme <- function(data){
+map_hlme <- function(data) {
 
 }

@@ -33,93 +33,103 @@
 #' @return It will return a list where the first element is the hlme object and the second element are the list of the input
 #'   parameters given to the model.
 #' @export
-lcmem <-  function(data, fixed, mixture, random, subject, k, B = NULL, idiag = FALSE, nwg = FALSE, df_sym = NULL, silent = TRUE){
-  if(is.null(df_sym)){
+lcmem <- function(data, fixed, mixture, random, subject, k, B = NULL, idiag = FALSE, nwg = FALSE, df_sym = NULL, silent = TRUE) {
+  if (is.null(df_sym)) {
     df_sym <- substitute(...(df = df))$df
-  } else{
+  } else {
     df_sym <- df_sym
   }
-  if(!silent) message("-------------------------")
-  if(k != 1){
-    if(is.null(B)){
-      if(!silent) message("Running Betas ...")
+  if (!silent) message("-------------------------")
+  if (k != 1) {
+    if (is.null(B)) {
+      if (!silent) message("Running Betas ...")
 
-      call <- paste0("hlme(fixed = ", fixed,
-                     ", random = ", random,
-                     ", data = ", df_sym,
-                     ", ng = ", 1,
-                     ", idiag =", idiag,
-                     ", subject = ", subject,")")
+      call <- paste0(
+        "hlme(fixed = ", fixed,
+        ", random = ", random,
+        ", data = ", df_sym,
+        ", ng = ", 1,
+        ", idiag =", idiag,
+        ", subject = ", subject, ")"
+      )
 
-      if(!silent) cat(call, "\n")
+      if (!silent) cat(call, "\n")
 
 
-      beta <- lcmm::hlme(fixed = stats::as.formula(fixed),
-                   random = stats::as.formula(random),
-                   data = data,
-                   ng = 1,
-                   idiag = idiag,
-                   subject = subject,
-                   verbose = !silent)
+      beta <- lcmm::hlme(
+        fixed = stats::as.formula(fixed),
+        random = stats::as.formula(random),
+        data = data,
+        ng = 1,
+        idiag = idiag,
+        subject = subject,
+        verbose = !silent
+      )
 
-      if(!silent) message("Betas Done!")
-    } else{
+      if (!silent) message("Betas Done!")
+    } else {
       beta <- B
-      if(!silent) message("Betas Provided!")
+      if (!silent) message("Betas Provided!")
     }
-    if(!silent) message("Running Model ...")
+    if (!silent) message("Running Model ...")
 
-    call <- paste0("hlme(fixed = ", fixed,
-                   ", mixture = ", mixture,
-                   ", random = ", random,
-                   ", data = ", df_sym,
-                   ", ng = ", k,
-                   ", idiag =", idiag,
-                   ", nwg = ", nwg,
-                   ", subject = ", subject,
-                   ", B = ", as.symbol("beta"), ")")
+    call <- paste0(
+      "hlme(fixed = ", fixed,
+      ", mixture = ", mixture,
+      ", random = ", random,
+      ", data = ", df_sym,
+      ", ng = ", k,
+      ", idiag =", idiag,
+      ", nwg = ", nwg,
+      ", subject = ", subject,
+      ", B = ", as.symbol("beta"), ")"
+    )
 
-    if(!silent) cat(call, "\n")
+    if (!silent) cat(call, "\n")
 
-    mo <- lcmm::hlme(fixed = stats::as.formula(fixed),
-               mixture = stats::as.formula(mixture),
-               random = stats::as.formula(random),
-               data = data,
-               ng = k,
-               idiag = idiag,
-               nwg = nwg,
-               subject = subject,
-               B = beta,
-               verbose = !silent)
+    mo <- lcmm::hlme(
+      fixed = stats::as.formula(fixed),
+      mixture = stats::as.formula(mixture),
+      random = stats::as.formula(random),
+      data = data,
+      ng = k,
+      idiag = idiag,
+      nwg = nwg,
+      subject = subject,
+      B = beta,
+      verbose = !silent
+    )
 
-    mo$call <-  parse(text = call)[[1]]
+    mo$call <- parse(text = call)[[1]]
+  } else {
+    if (!silent) message("Running Model ...")
 
-  } else{
-    if(!silent) message("Running Model ...")
+    call <- paste0(
+      "hlme(fixed = ", fixed,
+      ", random = ", random,
+      ", data = ", df_sym,
+      ", ng = ", k,
+      ", idiag =", idiag,
+      ", subject = ", subject, ")"
+    )
 
-    call <- paste0("hlme(fixed = ", fixed,
-                   ", random = ", random,
-                   ", data = ", df_sym,
-                   ", ng = ", k,
-                   ", idiag =", idiag,
-                   ", subject = ", subject, ")")
+    if (!silent) cat(call, "\n")
 
-    if(!silent) cat(call, "\n")
-
-    mo <- lcmm::hlme(fixed = stats::as.formula(fixed),
-               random = stats::as.formula(random),
-               data = data,
-               ng = 1,
-               idiag = idiag,
-               subject = subject,
-               verbose = !silent)
-    mo$call <-  parse(text = call)[[1]]
-
+    mo <- lcmm::hlme(
+      fixed = stats::as.formula(fixed),
+      random = stats::as.formula(random),
+      data = data,
+      ng = 1,
+      idiag = idiag,
+      subject = subject,
+      verbose = !silent
+    )
+    mo$call <- parse(text = call)[[1]]
   }
-  if(!silent) message("Model Finished!")
-  if(!silent) message("-------------------------")
+  if (!silent) message("Model Finished!")
+  if (!silent) message("-------------------------")
   mo$idiag <- as.integer(idiag)
   mo$call$subject <- as.character(subject)
-  parameters <- list(fixed = fixed, mixture = mixture, random = random, subject = subject, k = k, idiag = idiag, nwg = nwg )
+  parameters <- list(fixed = fixed, mixture = mixture, random = random, subject = subject, k = k, idiag = idiag, nwg = nwg)
   return(list(model = mo, parameters = parameters))
 }

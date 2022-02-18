@@ -6,28 +6,30 @@
 #' also returns plots of the model selection criteria by model number.
 #' @export
 
-mo_eval <- function(list){
-  tab <- as.data.frame(do.call(rbind, lapply(1:length(list), function(i){
+mo_eval <- function(list) {
+  tab <- as.data.frame(do.call(rbind, lapply(1:length(list), function(i) {
     mo <- list[[i]]
-    a <- as.data.frame(summarytable(mo$model, mo$model, which = c("G", "loglik", "conv", "npm", "AIC", "BIC", "SABIC", "entropy","ICL", "%class"), display = FALSE))
-    a <- a[1,]
-    vect <- c("Model Number" = i, "Model" = paste0( "Random = ", mo$parameters$random,"; idiag = ", mo$parameters$idiag,"; nwg = ", mo$parameters$nwg),
-              "k" = a$G,
-              "conv" = a$conv,
-              "npm" = a$npm,
-              "loglik" = round(a$loglik),
-              "BIC" = round(a$BIC),
-              "AIC" = round(a$AIC),
-              "entropy" = round(a$entropy, digits = 5),
-              "ICL" = round(a$ICL))
+    a <- as.data.frame(summarytable(mo$model, mo$model, which = c("G", "loglik", "conv", "npm", "AIC", "BIC", "SABIC", "entropy", "ICL", "%class"), display = FALSE))
+    a <- a[1, ]
+    vect <- c(
+      "Model Number" = i, "Model" = paste0("Random = ", mo$parameters$random, "; idiag = ", mo$parameters$idiag, "; nwg = ", mo$parameters$nwg),
+      "k" = a$G,
+      "conv" = a$conv,
+      "npm" = a$npm,
+      "loglik" = round(a$loglik),
+      "BIC" = round(a$BIC),
+      "AIC" = round(a$AIC),
+      "entropy" = round(a$entropy, digits = 5),
+      "ICL" = round(a$ICL)
+    )
     return(vect)
-  } )))
-  vars <- c("k", "conv","npm","loglik","BIC","AIC","entropy","ICL")
-  tab[, vars] <- lapply(vars, function(var)as.numeric(tab[,var]))
+  })))
+  vars <- c("k", "conv", "npm", "loglik", "BIC", "AIC", "entropy", "ICL")
+  tab[, vars] <- lapply(vars, function(var) as.numeric(tab[, var]))
   plot <- pivot_longer(tab, npm:ICL, names_to = "mo_crit") %>%
     ggplot(aes(x = factor(as.integer(`Model Number`)))) +
     geom_point(aes(y = value)) +
-    geom_line(aes(y =value, group = "None")) +
+    geom_line(aes(y = value, group = "None")) +
     facet_wrap(vars(mo_crit), ncol = 3, scales = "free") +
     labs(x = "Model Number", title = "Model Criteria")
   return(list(plot = plot, table = tab))
