@@ -18,3 +18,9 @@ knitr::opts_chunk$set(
 library(helphlme)
 library(SLAM)
 ```
+
+## Test hlme2
+```{r}
+hlme2
+```
+
