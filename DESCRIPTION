@@ -19,5 +19,7 @@ RoxygenNote: 7.1.2
 Depends: R (>= 4.0.0)
 Imports: listenv, dplyr, future, lcmm, kableExtra, ggplot2, ggpubr
 Suggests: 
-    knitr, rmarkdown
+    SLAM,
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
