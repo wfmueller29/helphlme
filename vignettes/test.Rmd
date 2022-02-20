@@ -1,0 +1,56 @@
+---
+title: "Test helphlme Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Test helphlme Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(helphlme)
+library(SLAM)
+library(dplyr)
+```
+
+
+## Create Data to Test hlme
+```{r}
+main <- data_SLAM_gluc %>%
+  left_join(data_SLAM_census, by = "idno") %>%
+  select(-c(lact, cage, eartag, name, X, taghistory, tag, animal_id)) %>%
+  mutate(age_wk = difftime(date, dob, units = "weeks")) %>%
+  filter(cohort %in% c("1","2","3","4","5"))
+```
+
+## Test hlme2
+```{r}
+
+betas <- hlme(fixed = gluc~age_wk, random = ~1, subject = "idno", ng = 1, data = main)
+mo <- helphlme::hlme2(fixed = gluc~age_wk, 
+                        mixture = ~age_wk,
+                        random = ~1,
+                        subject = "idno",
+                        classmb = ~1,
+                        ng = 2,
+                        idiag = TRUE,
+                        nwg = TRUE,
+                        B = betas,
+                        data = main)
+
+
+```
+
+## Test map_hlme
+
+Create 
+```{r}
+
+```
