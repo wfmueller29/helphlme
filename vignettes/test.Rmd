@@ -2,7 +2,7 @@
 title: "Test helphlme Functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Test helphlme Functions}
+%\VignetteIndexEntry{Test helphlme Functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(helphlme)
 library(SLAM)
 library(dplyr)
+
 ```
 
 
@@ -27,30 +28,112 @@ main <- data_SLAM_gluc %>%
   left_join(data_SLAM_census, by = "idno") %>%
   select(-c(lact, cage, eartag, name, X, taghistory, tag, animal_id)) %>%
   mutate(age_wk = difftime(date, dob, units = "weeks")) %>%
-  filter(cohort %in% c("1","2","3","4","5"))
+  filter(cohort %in% c("1","2","3","4","5")) %>%
+  mutate(age_m = age_wk*0.230137)
 ```
 
 ## Test hlme2
-```{r}
+```{r test hlme2}
+fixed <- "gluc~age_wk"
+mixture <- "~age_wk"
+random <- ~1
+subject <- "idno"
+classmb <- ~1
+idiag <- TRUE
+nwg <- TRUE
+ng <- 1
+betas <- lcmm::hlme(fixed = gluc~age_wk, random = ~1, subject = "idno", ng = 1, data = main)
 
-betas <- hlme(fixed = gluc~age_wk, random = ~1, subject = "idno", ng = 1, data = main)
-mo <- helphlme::hlme2(fixed = gluc~age_wk, 
-                        mixture = ~age_wk,
-                        random = ~1,
-                        subject = "idno",
-                        classmb = ~1,
-                        ng = 2,
-                        idiag = TRUE,
-                        nwg = TRUE,
-                        B = betas,
-                        data = main)
+# Create standard models to ensure that the calls from hlme2 and lcmm::hlme are the same 
+mo1_std <- betas
+mo2_std <- lcmm::hlme(fixed = gluc~age_wk, mixture = ~age_wk, random = ~1, subject = "idno", ng = 2, data = main, B = betas)
+
+
+# Test hlme2 for ng = 1, given ng > 1 arguments 
+mo1 <- helphlme::hlme2(fixed = fixed,
+                      mixture = mixture,
+                      random = random,
+                      subject = subject,
+                      classmb = classmb,
+                      ng = ng,
+                      idiag = idiag,
+                      nwg = nwg,
+                      B = betas,
+                      data = main)
+
+# Test hlme2 for ng > 1 with betas
+ng <- 2
+mo2 <- helphlme::hlme2(fixed = fixed,
+                      mixture = mixture,
+                      random = random,
+                      subject = subject,
+                      classmb = classmb,
+                      ng = ng,
+                      idiag = idiag,
+                      nwg = nwg,
+                      B = betas,
+                      data = main)
+
+# Test hlme2 for ng > 1 without betas
+ng <- 2
+mo3 <- helphlme::hlme2(fixed = fixed,
+                      mixture = mixture,
+                      random = random,
+                      subject = subject,
+                      classmb = classmb,
+                      ng = ng,
+                      idiag = idiag,
+                      nwg = nwg,
+#                      B = betas,
+                      data = main)
+
+
+
 
 
 ```
 
 ## Test map_hlme
 
-Create 
-```{r}
+Create mapped dataframe
+```{r map_df}
+
+## create dataframe of all combinations of variables provided
+
+map_df <- helphlme::cross_call(outcome = "gluc", 
+                               fixed_cov = c("~age_wk + sex", "~age_wk", "~age_wk+sex+strain"), 
+                               age_var = c("age_wk"), 
+                               mixture = c("~1"),
+                               random = c("~1", "~-1"),
+                               subject = "idno",
+                               idiag = c(TRUE, FALSE),
+                               data = "main",
+                               ng = 1:2)
+
+
 
 ```
+
+Create pmap_hlme2
+```{r apply hlme_vec}
+
+pmap_hlme2 <- function(data){
+  data <- map_df[-c(1:3)]
+  
+  mo <- listenv::listenv()
+  for(i in 1:nrow(data)){
+    args <- as.list(data[i,])
+    call <- rlang::call2(.fn = "hlme2",
+                         .ns = "helphlme",
+                         !!!args)
+    
+    mo[[i]] %<-% eval(call)
+  }
+  mo <- as.list(mo)
+  data$mo <- mo
+  
+}
+
+```
+
+
