@@ -18,7 +18,9 @@
 #' for outcome, fixed_cov, and age_var (if specified), and the remaining columns contain the
 #' values hlme arguments whose columns correspond to the argument names.
 #'
+#' @importFrom purrr cross_df
 #'
+#' @export
 
 cross_call <- function(outcome, fixed_cov, age_var = NULL, ...){
 
