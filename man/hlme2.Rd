@@ -170,9 +170,23 @@ variance-covariance matrix of the random-effects}
 \item{data}{the original data set (if returndata is TRUE)}
 }
 \description{
-This function runs the hlme function from the lcmm package, with a few tweaks to make hlme more flexible for looping purposes.
-If ng > 1 and B is not supplied, hlme2 will run hlme with ng = 1, then use this model as B argument
+This function runs the hlme function from the lcmm package, with a few tweaks to make hlme more flexible
+for looping purposes. These are the tweaks:
+\itemize{
+\item hlme2 will evaluate all arguments except B and data in the function call. This
+way arguments can be provided as variables that are defined in an environment c
+where hlme2 was called.
+\item If ng = 1, hlme2 will automatically drop hlme arguments that are incompatible with an ng = 1 call.
+These arguments are mixture, classmb, B, and nwg = TRUE.
+\item If ng > 1 and B is not supplied, hlme2 will run hlme with ng = 1, and use this model as B argument
 for the specified model.
+\item Arguments fixed, mixture, random, classmb, data, and B can be provided as character strings.
+The strings will be coerced to formulas for fixed, mixture, random, and classmb. The strings
+for data and B will be evaluated as symbols in the global environment.
+}
+
+Note: The documentation below was inherited from the lcmm::hlme package and does not take into
+account these alterations.
 }
 \details{
 A. THE VECTOR OF PARAMETERS B
@@ -242,4 +256,23 @@ problem. An alternative is to remove the parameters of the Beta of Splines
 link function from the inverse of the Hessian with option partialH.  If not,
 the program should be run again with other initial values, with a higher
 maximum number of iterations or less strict convergence tolerances.
+}
+\references{
+Proust-Lima C, Philipps V, Liquet B (2017). Estimation of Extended Mixed 
+Models Using Latent Classes and Latent Processes: The R Package lcmm. 
+Journal of Statistical Software, 78(2), 1-56. doi:10.18637/jss.v078.i02
+
+Verbeke G and Lesaffre E (1996). A linear mixed-effects model with
+heterogeneity in the random-effects population. Journal of the American
+Statistical Association 91, 217-21
+
+Muthen B and Shedden K (1999). Finite mixture modeling with mixture outcomes
+using the EM algorithm. Biometrics 55, 463-9
+
+Proust C and Jacqmin-Gadda H (2005). Estimation of linear mixed models with
+a mixture of distribution for the random-effects. Computer Methods Programs
+Biomedicine 78, 165-73
+}
+\seealso{
+\link[lcmm]{hlme}
 }
