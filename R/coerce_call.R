@@ -1,10 +1,10 @@
 #' Coerce call to hlme
 #'
 #' This will coerce a call so that the call arguments are valid arguments for
-#' hlme function. If the formula arguments (fixed, random, mixture, classmb) are
-#' character strings, they will be coerce to formula. If the argument data is a
-#' character string, it will be evaluated as a symbol in the global env. The same goes
-#' for the B argument
+#' hlme function. If the formula arguments (fixed, random, mixture, classmb)
+#' is a are character strings, they will be coerce to formula. If the argument
+#' data character string, it will be evaluated as a symbol in the global env.
+#' The same goes for the B argument
 #' @param call the call that is to be coerced
 #' @return will return another call whos arguments are combatitle with the hlme
 #' function call
