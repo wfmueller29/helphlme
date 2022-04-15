@@ -32,8 +32,6 @@
 #'
 #' @export
 
-
-
 hlme2 <- function(fixed,
                   mixture,
                   random,
@@ -59,6 +57,13 @@ hlme2 <- function(fixed,
                   partialH = FALSE,
                   silent = FALSE) {
 
+  # This function will loop through 2 cases
+  # Case 1: ng = 1
+  #     - Drop any argument associated with ng > 1 and call hlme
+  # Case 2: ng > 1
+  #     Case 2.1: Betas are not provided
+  #     Case 2.1: Betas are provided
+
   if (isFALSE(silent)) cat("hlme2 was called \n")
   # store call and initial args ------------------------------------------------
 
@@ -66,43 +71,40 @@ hlme2 <- function(fixed,
   call <- match.call()
   # evaluate all arguments of the call except for [[1]], data, and B
   args <- names(call)[!(names(call) %in% c("", "data", "B"))]
-  for(arg in args) {
+  for (arg in args) {
     call[[arg]] <- eval(call[[arg]])
   }
-  # coerce call if arguments are not compatible with hlme, make them compatible
-  call <- helphlme::coerce_call(call)
   # store init_args
   init_args <- names(call)
 
-  # Determine whether ng = 1 or n > 1 and proceed ------------------------------
-
+  # Check Case 1
   if (!("ng" %in% init_args) | ng == 1) {
-    # if ng = 1 there is no need to calculate betas ----------------------------
+    # Case 1: ng = 1 --------------------------------------------------------
+    # caculate new_call by dropping ng > 1 args
 
     # Tell User ng = 1
     if (isFALSE(silent)) cat("ng = 1 \n")
-
     # drop arguments that are not compatible with ng = 1
-    # store as new c
     not_compat <- c("mixture", "classmb", "nwg", "B")
     new_call <- call[!(init_args %in% not_compat)]
 
-
+    # Check Case 2
   } else if ("ng" %in% init_args & ng != 1) {
-    # if ng >1 determine betas, determine betas and add them to new call -------
+    # Case 2: ng > 1 ----------------------------------------------------------
+    # ng > 1 determine new_call by keeping ng > 1 args and
+    # calculating initial betas
 
     # Tell User ng > 1
     if (isFALSE(silent)) cat("ng > 1 \n")
 
+    # Case 2 subcases
     if ("B" %in% init_args) {
-      # if betas provided store betas from call --------------------------------
-
+      # Case 2.1 - store betas from call --------------------------------------
       if (isFALSE(silent)) cat("using betas from B arg .....\n")
       betas <- B
-
-    } else{
-      # if betas not provided, calculate new beta model with ng = 1 ------------
-
+    } else {
+      # Case 2.2 - calculate new betas ----------------------------------------
+      # if betas not provided, calculate new beta model with ng = 1
       # create new call for beta model
       call_betas <- call
       # make function lcmm::hlme
@@ -114,15 +116,12 @@ hlme2 <- function(fixed,
       # eval call betas
       if (isFALSE(silent)) cat("calculating beta model .....\n")
       betas <- eval(call_betas)
-
     }
-    # given betas, store new_call ----------------------------------------------
-
+    # Case 2 - calculate new_call using betas ---------------------------------
     # store new call
     new_call <- call
     # make B of new_call the symbol betas
     new_call$B <- as.symbol("betas")
-
   }
   # calculate mo from new_call and return mo -----------------------------------
 
@@ -135,5 +134,4 @@ hlme2 <- function(fixed,
   if (isFALSE(silent)) cat("hlme2 call finised \n\n")
   # return mo
   mo
-
 }
