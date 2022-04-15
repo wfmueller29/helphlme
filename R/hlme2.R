@@ -59,14 +59,14 @@ hlme2 <- function(fixed,
                   partialH = FALSE,
                   silent = FALSE) {
 
-  if(isFALSE(silent)) cat("hlme2 was called \n")
+  if (isFALSE(silent)) cat("hlme2 was called \n")
   # store call and initial args ------------------------------------------------
 
   # store call
   call <- match.call()
   # evaluate all arguments of the call except for [[1]], data, and B
   args <- names(call)[!(names(call) %in% c("", "data", "B"))]
-  for(arg in args){
+  for(arg in args) {
     call[[arg]] <- eval(call[[arg]])
   }
   # coerce call if arguments are not compatible with hlme, make them compatible
@@ -76,7 +76,7 @@ hlme2 <- function(fixed,
 
   # Determine whether ng = 1 or n > 1 and proceed ------------------------------
 
-  if (!("ng" %in% init_args) | ng == 1){
+  if (!("ng" %in% init_args) | ng == 1) {
     # if ng = 1 there is no need to calculate betas ----------------------------
 
     # Tell User ng = 1
