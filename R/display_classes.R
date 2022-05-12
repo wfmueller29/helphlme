@@ -19,7 +19,7 @@
 #' @export
 
 display_classes <- function(df, x, age, ...) {
-  if (is.list(x) & class(x[[1]] == "hlme")) {
+  if (is.list(x) & class(x[[1]]) == "hlme") {
     display_classes_apply(df, x, age, ...)
   }
   else {
