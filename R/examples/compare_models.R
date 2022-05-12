@@ -1,5 +1,6 @@
 library(dplyr)
 library(ggplot2)
+
 model1 <- helphlme::hlme2(
   data = lcmm::data_hlme,
   fixed = Y ~ Time + X1 + X2,
@@ -22,4 +23,4 @@ model_list <- list(model1 = model1, model2 = model2)
 
 
 
-mo_eval(model_list)
+compare_models(model_list)

@@ -13,7 +13,7 @@
 #' @return a dataframe with vars centered and scaled and their nonscaled values stores as var_ns
 #' @export
 
-prep_hlme2 <- function(df, vars, center = TRUE, scale = TRUE, ref_data = NULL) {
+prep_hlme <- function(df, vars, center = TRUE, scale = TRUE, ref_data = NULL) {
   # save nonscaled values
   vars_ns <- sapply(vars, function(var) paste0(var, "_ns"))
   df[, vars_ns] <- lapply(vars, function(var) {

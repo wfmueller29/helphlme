@@ -1,13 +1,14 @@
-#' Evaluate models
+#' Compare models
 #'
 #' Outputs BIC and AIC for each model in the list provided
 #' @param model_list List of lcmem outputs from ran_can function
-#' @return data frame of with model number, model details, BIC and AIC other model selection criteria. This function
+#' @return data frame of with model number, model details, BIC and AIC other
+#' model selection criteria. This function
 #' also returns plots of the model selection criteria by model number.
 #' @export
-#' @example R\examples\mo_eval.R
+#' @example R\examples\compare_models.R
 
-mo_eval <- function(model_list) {
+compare_models <- function(model_list) {
   tab <- lapply(1:length(model_list), function(i) {
     model <- model_list[[i]]
     sum_table <- lcmm::summarytable(model,

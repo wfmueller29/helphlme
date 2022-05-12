@@ -26,7 +26,12 @@ model2 <- helphlme::hlme2(
 
 model_list <- list(model1 = model1, model2 = model2)
 
-pred <- lcpred(prep_data, age_vars = "Time", fixcov = c("X1" = 0, "X2" = 0))
+pred_df <- create_pred_df(prep_data,
+                          age_vars = "Time",
+                          fixcov = c("X1" = 0, "X2" = 0))
 
-keval_apply(pred, model_list, age = "Time")
+# works for single hlme models
+display_classes(pred_df, model1, age = "Time")
 
+# works for list of hlme models
+display_classes(pred_df, model_list, age = "Time")
