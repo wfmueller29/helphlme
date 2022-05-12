@@ -7,7 +7,8 @@
 keval_apply(df, model_list, age, ...)
 }
 \arguments{
-\item{df}{data frame used to produce model. lcpred output}
+\item{df}{data frame used to produce model. Should be a dataframe outputted
+from the lcpred function.}
 
 \item{model_list}{List of lcmem output to evaluate}
 
@@ -29,4 +30,38 @@ to identify each model
 \note{
 if you are using RMarkdown and want to output the kable output to html set
 resutls = "asis"
+}
+\examples{
+library(dplyr)
+library(ggplot2)
+
+prep_data <- helphlme::prep_hlme2(lcmm::data_hlme,
+                             vars = c("Time"),
+                             center = FALSE,
+                             scale = FALSE)
+
+model1 <- helphlme::hlme2(
+  data = prep_data,
+  fixed = Y ~ Time + X1 + X2,
+  mixture = ~ Time + X1 + X2,
+  random = ~Time,
+  subject = "ID",
+  ng = 2
+)
+
+model2 <- helphlme::hlme2(
+  data = prep_data,
+  fixed = Y ~ Time + X1 + X2,
+  mixture = ~ Time + X1 + X2,
+  random = ~Time,
+  subject = "ID",
+  ng = 3
+)
+
+model_list <- list(model1 = model1, model2 = model2)
+
+pred <- lcpred(prep_data, age_vars = "Time", fixcov = c("X1" = 0, "X2" = 0))
+
+keval_apply(pred, model_list, age = "Time")
+
 }

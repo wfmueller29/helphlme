@@ -4,10 +4,10 @@
 \alias{mo_eval}
 \title{Evaluate models}
 \usage{
-mo_eval(list)
+mo_eval(model_list)
 }
 \arguments{
-\item{list}{List of lcmem outputs from ran_can function}
+\item{model_list}{List of lcmem outputs from ran_can function}
 }
 \value{
 data frame of with model number, model details, BIC and AIC other model selection criteria. This function
@@ -15,4 +15,31 @@ also returns plots of the model selection criteria by model number.
 }
 \description{
 Outputs BIC and AIC for each model in the list provided
+}
+\examples{
+library(dplyr)
+library(ggplot2)
+model1 <- helphlme::hlme2(
+  data = lcmm::data_hlme,
+  fixed = Y ~ Time + X1 + X2,
+  mixture = Y ~ Time + X1 + X2,
+  random = ~Time,
+  subject = "ID",
+  ng = 2
+)
+
+model2 <- helphlme::hlme2(
+  data = lcmm::data_hlme,
+  fixed = Y ~ Time + X1 + X2,
+  mixture = Y ~ Time + X1 + X2,
+  random = ~Time,
+  subject = "ID",
+  ng = 3
+)
+
+model_list <- list(model1 = model1, model2 = model2)
+
+
+
+mo_eval(model_list)
 }
