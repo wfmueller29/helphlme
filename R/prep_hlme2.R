@@ -8,10 +8,12 @@
 #' @param center a boolean that specifies if vars should be centered
 #'   by subtracting by the mean
 #' @param scale a boolean that spcifies if vars should be devided by their standard deviation
+#' @param ref_data a dataframe whose values for `var` should be used to center
+#' and scale the `df`
 #' @return a dataframe with vars centered and scaled and their nonscaled values stores as var_ns
 #' @export
 
-lcmem_prep <- function(df, vars, center = TRUE, scale = TRUE, ref_data = NULL) {
+prep_hlme2 <- function(df, vars, center = TRUE, scale = TRUE, ref_data = NULL) {
   # save nonscaled values
   vars_ns <- sapply(vars, function(var) paste0(var, "_ns"))
   df[, vars_ns] <- lapply(vars, function(var) {
