@@ -11,7 +11,7 @@
 #' @export
 
 
-plot_model <- function(df, model, age, ...) {
+plot_hlme <- function(df, model, age, ...) {
   if (model$conv == 1 | model$conv == 2) {
     pred1 <- lcmm::predictY(model, df, var.time = paste0(age, "_ns"))
 
