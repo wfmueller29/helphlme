@@ -1,16 +1,20 @@
 #' Prep Data Frame for trajpkg functions
 #'
-#' This function centers and scales the variables provided by vars by subtracting by the mean
-#' and dividing by the starndard deviation. It will also create new columns appending with
+#' This function centers and scales the variables provided by vars by
+#' subtracting by the mean and dividing by the starndard deviation.
+#' It will also create new columns appending with
 #' "_ns" to save the original nonscaled values.
 #' @param df Dataframe object
-#' @param vars character vector providing the names of the columns we would like to center and scale
+#' @param vars character vector providing the names of the columns we would
+#' like to center and scale
 #' @param center a boolean that specifies if vars should be centered
-#'   by subtracting by the mean
-#' @param scale a boolean that spcifies if vars should be devided by their standard deviation
+#' by subtracting by the mean
+#' @param scale a boolean that spcifies if vars should be devided by their
+#' standard deviation
 #' @param ref_data a dataframe whose values for `var` should be used to center
 #' and scale the `df`
-#' @return a dataframe with vars centered and scaled and their nonscaled values stores as var_ns
+#' @return a dataframe with vars centered and scaled and their nonscaled values
+#' stores as var_ns
 #' @export
 
 prep_hlme <- function(df, vars, center = TRUE, scale = TRUE, ref_data = NULL) {
