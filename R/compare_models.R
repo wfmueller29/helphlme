@@ -9,7 +9,7 @@
 #' @example R\examples\compare_models.R
 
 compare_models <- function(model_list) {
-  tab <- lapply(1:length(model_list), function(i) {
+  tab <- lapply(seq_along(model_list), function(i) {
     model <- model_list[[i]]
     sum_table <- lcmm::summarytable(model,
       model,
@@ -22,17 +22,20 @@ compare_models <- function(model_list) {
         "BIC",
         "SABIC",
         "entropy",
-        "ICL",
+        "ICL1",
+        "ICL2",
         "%class"
       ), display = FALSE
     )
 
     df_sum_table <- as.data.frame(sum_table)
 
-    per_class_names <- names(df_sum_table)[grepl(x = names(df_sum_table),
-                                                 pattern = "\\%class")]
+    per_class_names <- names(df_sum_table)[grepl(
+      x = names(df_sum_table),
+      pattern = "\\%class"
+    )]
 
-    smallest_class = min(df_sum_table[, per_class_names])
+    smallest_class <- min(df_sum_table[, per_class_names])
 
 
     a <- df_sum_table[1, ]
@@ -53,7 +56,8 @@ compare_models <- function(model_list) {
       "BIC" = round(a$BIC),
       "AIC" = round(a$AIC),
       "entropy" = round(a$entropy, digits = 5),
-      "ICL" = round(a$ICL),
+      "ICL1" = round(a$ICL1),
+      "ICL2" = round(a$ICL2),
       "Smallest Class (%)" = smallest_class
     )
 
@@ -61,19 +65,23 @@ compare_models <- function(model_list) {
   })
 
   tab <- as.data.frame(do.call(rbind, tab))
-  vars <- c("k",
-            "conv",
-            "npm",
-            "loglik",
-            "BIC",
-            "AIC",
-            "entropy",
-            "ICL",
-            "Smallest Class (%)")
+  vars <- c(
+    "k",
+    "conv",
+    "npm",
+    "loglik",
+    "BIC",
+    "AIC",
+    "entropy",
+    "ICL1",
+    "ICL2",
+    "Smallest Class (%)"
+  )
   tab[, vars] <- lapply(vars, function(var) as.numeric(tab[, var]))
   plot <- tidyr::pivot_longer(tab,
-                              c(BIC, entropy, ICL, conv, k, `Smallest Class (%)`),
-                              names_to = "mo_crit") %>%
+    c(BIC, entropy, ICL1, ICL2, conv, k, `Smallest Class (%)`),
+    names_to = "mo_crit"
+  ) %>%
     ggplot(aes(x = factor(as.integer(`Model Number`)))) +
     geom_point(aes(y = value)) +
     geom_line(aes(y = value, group = "None")) +
