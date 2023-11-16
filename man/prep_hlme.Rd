@@ -9,21 +9,25 @@ prep_hlme(df, vars, center = TRUE, scale = TRUE, ref_data = NULL)
 \arguments{
 \item{df}{Dataframe object}
 
-\item{vars}{character vector providing the names of the columns we would like to center and scale}
+\item{vars}{character vector providing the names of the columns we would
+like to center and scale}
 
 \item{center}{a boolean that specifies if vars should be centered
 by subtracting by the mean}
 
-\item{scale}{a boolean that spcifies if vars should be devided by their standard deviation}
+\item{scale}{a boolean that spcifies if vars should be devided by their
+standard deviation}
 
 \item{ref_data}{a dataframe whose values for \code{var} should be used to center
 and scale the \code{df}}
 }
 \value{
-a dataframe with vars centered and scaled and their nonscaled values stores as var_ns
+a dataframe with vars centered and scaled and their nonscaled values
+stores as var_ns
 }
 \description{
-This function centers and scales the variables provided by vars by subtracting by the mean
-and dividing by the starndard deviation. It will also create new columns appending with
+This function centers and scales the variables provided by vars by
+subtracting by the mean and dividing by the starndard deviation.
+It will also create new columns appending with
 "_ns" to save the original nonscaled values.
 }
