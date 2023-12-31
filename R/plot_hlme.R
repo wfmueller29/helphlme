@@ -2,7 +2,7 @@
 #'
 #' Provide an hlme model, this function will use the base plot function to plot the trajectories
 #' determined by the fixed effects of the model
-#' @param df data frame used to predict model outcomes. Should be prodcued by 
+#' @param df data frame used to predict model outcomes. Should be prodcued by
 #' create_pred_df function
 #' @param model hlme model output. If modelled using lcmem, use lcmem$model.
 #' @param age string specfiying age variable name
@@ -24,4 +24,3 @@ plot_hlme <- function(df, model, age, ...) {
     message(sub, "did not converge")
   }
 }
-
