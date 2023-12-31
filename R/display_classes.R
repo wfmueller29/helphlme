@@ -19,10 +19,10 @@
 #' @export
 
 display_classes <- function(df, x, age, ...) {
-  if (is.list(x) & class(x[[1]]) == "hlme") {
+  if (is.list(x) && class(x[[1]]) == "hlme") {
     display_classes_apply(df, x, age, ...)
-  }
-  else {
+  } else {
+    model <- x
     sub <- paste0(
       "k = ",
       paste(model$call$ng, collapse = ""),
@@ -40,36 +40,38 @@ display_classes <- function(df, x, age, ...) {
       sub = sub,
       ...
     )
-    print(kableExtra::kable(table_classes(model), caption = sub) %>%
-            kableExtra::kable_styling("striped", full_width = F))
+    table <- kableExtra::kable(table_classes(model), caption = sub)
+    table <- kableExtra::kable_styling(table, "striped", full_width = FALSE)
+    print(table)
   }
 }
 
 
 display_classes_apply <- function(df, model_list, age, ...) {
-  for (i in 1:length(model_list)) {
+  for (i in seq_len(length(model_list))) {
     model <- model_list[[i]]
-  sub <- paste0(
-    "Model Number = ",
-    i,
-    "; k = ",
-    paste(model$call$ng, collapse = ""),
-    "; Random = ",
-    paste(model$call$random, collapse = ""),
-    "; idiag = ",
-    paste(model$call$idiag, collapse = ""),
-    "; nwg = ",
-    paste(model$call$nwg, collapse = "")
-  )
-  plot_hlme(
-    df = df,
-    model = model,
-    age = age,
-    sub = sub,
-    ...
-  )
-  print(kableExtra::kable(table_classes(model), caption = sub) %>%
-          kableExtra::kable_styling("striped", full_width = F))
+    sub <- paste0(
+      "Model Number = ",
+      i,
+      "; k = ",
+      paste(model$call$ng, collapse = ""),
+      "; Random = ",
+      paste(model$call$random, collapse = ""),
+      "; idiag = ",
+      paste(model$call$idiag, collapse = ""),
+      "; nwg = ",
+      paste(model$call$nwg, collapse = "")
+    )
+    plot_hlme(
+      df = df,
+      model = model,
+      age = age,
+      sub = sub,
+      ...
+    )
+    table <- kableExtra::kable(table_classes(model), caption = sub)
+    table <- kableExtra::kable_styling(table, "striped", full_width = FALSE)
+    print(table)
   }
 }
 
@@ -87,10 +89,15 @@ table_classes <- function(model) {
   mopp <- model$pprob
   mopp_sum <- mopp %>%
     dplyr::group_by(class) %>%
-    dplyr::summarise(n = dplyr::n(),
-                     dplyr::across(dplyr::starts_with("prob"),
-                                   ~ round(mean(.x),
-                                           digits = 4))) %>%
+    dplyr::summarise(
+      n = dplyr::n(),
+      dplyr::across(
+        dplyr::starts_with("prob"),
+        ~ round(mean(.x),
+          digits = 4
+        )
+      )
+    ) %>%
     dplyr::mutate(freq = n / sum(n))
   return(mopp_sum)
 }
